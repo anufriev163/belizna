@@ -1105,8 +1105,8 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   var cardH = 0;
   function stackD() {
     if (W !== W0) { W0 = W; H0 = H; }
-    var base = Math.min(W * .62, H0 * .34, 440), room = H0 - 96 - cardH - 48;
-    return cardH ? Math.max(base, Math.min(room, W * .86, 440)) : base;
+    var base = Math.min(W * .7, H0 * .38, 460), room = H0 - 96 - cardH + 6;
+    return cardH ? Math.max(base, Math.min(room, W * 1.02, 470)) : base;
   }
   var sp = { on: false, x: 0, y: 0, d: 0, vx: 0, vy: 0, vd: 0 };
   window.addEventListener("site:jump", function () { sp.on = false; sp.vx = sp.vy = sp.vd = 0; });
@@ -1149,13 +1149,13 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     segs = [].slice.call(document.querySelectorAll("[data-p]")).map(function (el) {
       var r = el.getBoundingClientRect(), pp = el.dataset.p.split(" ");
       var top = r.top + window.scrollY;
-      return { top: top, h: r.height, mid: top + r.height / 2, a: +pp[0], b: +pp[1], c: +(el.dataset.c || 0), d: +(el.dataset.d || 1), y: +(el.dataset.y || 0), v: el.classList.contains("plain") ? (window.siteLayout() === "stack" ? .58 : 0) : 1, m: el.dataset.cmp ? 1 : 0, g: el.classList.contains("split") ? 1 : 0 };
+      return { top: top, h: r.height, mid: top + r.height / 2, a: +pp[0], b: +pp[1], c: +(el.dataset.c || 0), d: +(el.dataset.d || 1), y: +(el.dataset.y || 0), v: el.classList.contains("plain") ? (window.siteLayout() === "stack" ? .62 : 0) : 1, m: el.dataset.cmp ? 1 : 0, g: el.classList.contains("split") ? 1 : 0 };
     });
     document.documentElement.style.setProperty("--gap", (baseD() * .62 + 56).toFixed(0) + "px");
     cardH = 0;
     if (window.siteLayout() === "stack") [].forEach.call(document.querySelectorAll(".film .tx"), function (e) { cardH = Math.max(cardH, e.offsetHeight); });
-    document.documentElement.style.setProperty("--stk", (stackD() + 96).toFixed(0) + "px");
-    document.documentElement.style.setProperty("--pb", (84 + stackD() * .58 + 8).toFixed(0) + "px");
+    document.documentElement.style.setProperty("--stk", (stackD() + 86).toFixed(0) + "px");
+    document.documentElement.style.setProperty("--pb", (84 + stackD() * .62 + 8).toFixed(0) + "px");
   }
   function filmP() {
     var yc = window.scrollY + H / 2, p = segs.length ? segs[0].a : 0;
