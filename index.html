@@ -1120,7 +1120,8 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   }
   function circleAt(k) {
     var L = window.siteLayout(), tg = circTarget(), D, cx1, cy1, R0 = Math.hypot(W, H) / 2 + 20;
-    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; cx1 = W / 2; cy1 = 84 + D / 2; band(tg.v, D); }
+    circ.pw = 0;
+    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; circ.pw = clamp((1 - tg.v) / .42); cx1 = W / 2 + (tg.c || 0) * W * .2 * circ.pw; cy1 = 84 + D / 2 + 6 * circ.pw; band(tg.v, D); }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
     else { D = circ.Z = baseD() * tg.d; cx1 = W / 2 + tg.c * W * .24; cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
@@ -1458,7 +1459,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       if (rot.idle > 2.5 || !show) { var back = 1 - Math.exp(-dt * 2.5); rot.y -= rot.y * back; rot.x -= rot.x * back; rot.z += (1 - rot.z) * back * .6; }
     }
     function orbit(az, el, r) {
-      az += azShift + rot.y; el += rot.x; r -= azShift * .12;   // в «было / стало» камера чуть ближе
+      var pw = circ.pw || 0; az += azShift + rot.y + pw * 32 * Math.sin(scrollY / 240); el += rot.x + pw * 6 * Math.sin(scrollY / 170); r -= azShift * .12;   // в «было / стало» камера чуть ближе
       camera.position.set(aimTmp.x + Math.sin(az * DEG) * Math.cos(el * DEG) * r, aimTmp.y + Math.sin(el * DEG) * r, aimTmp.z + Math.cos(az * DEG) * Math.cos(el * DEG) * r);
       camera.lookAt(aimTmp);
       // Крупно на первом экране, потом вписываем в круг и ставим в его центр
