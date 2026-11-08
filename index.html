@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Белизна</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%2312324A'/><g transform='translate(3.2 3.6) scale(.8)'><path fill='%23fff' d='M11 7.5c-3.4 0-5.5 2.7-5.5 6 0 2.6.9 4.4 1.7 6.6.7 2 .9 5.4 2.6 5.4 2.1 0 1.8-5.3 6.2-5.3s4.1 5.3 6.2 5.3c1.7 0 1.9-3.4 2.6-5.4.8-2.2 1.7-4 1.7-6.6 0-3.3-2.1-6-5.5-6-2.1 0-3.2 1-5 1s-2.9-1-5-1z'/><path fill='none' stroke='%2312324A' stroke-width='2' stroke-linecap='round' d='M11.2 12.6c1.2 2.5 3 3.7 4.8 3.7s3.6-1.2 4.8-3.7'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Белизна — смайл-бар">
 <meta name="twitter:image" content="https://anufriev163.github.io/belizna/og.jpg">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#F5F6F7">
 <link rel="canonical" href="https://anufriev163.github.io/belizna/">
 <style>
 :root { --card-shadow: inset 0 0 0 1px rgb(255 255 255 / .75), 0 2px 6px rgb(18 50 74 / .05), 0 30px 64px -26px rgb(18 50 74 / .36); }
@@ -91,7 +91,7 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .stage { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
 .port { position: absolute; left: 0; top: 0; overflow: hidden; border-radius: 50%; contain: strict; will-change: transform; }
 .inner { position: absolute; left: 0; top: 0; will-change: transform; }
-.bg { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 44%, #fff 0%, #F5F6F7 62%, #E6E8EA 100%); }
+.bg { position: absolute; inset: 0; background: radial-gradient(ellipse 72% 70% at 50% 44%, #fff 0%, #F5F6F7 62%, #EEF0F1 100%); }
 #jaw { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1s ease; }
 .ready #jaw { opacity: 1; }
 .glow { position: absolute; inset: 0; background: #fff; opacity: 0; }
@@ -478,7 +478,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     }, Math.max(0, 900 - performance.now()));
   };
   // Без 3D сайт остаётся рабочим: на первом экране название и причина
+  window.__errs = [];
+  addEventListener("error", function (e) { window.__errs.push((e.filename ? e.filename.split("/").pop() + ": " : "") + e.message); }, true);
   window.siteFail = function (why) {
+    if (window.__errs.length) why += " (" + window.__errs.slice(0, 2).join("; ") + ")";
     document.body.classList.add("no3d");
     var el = document.querySelector(".why"); if (el) el.textContent = why;
     window.siteReady();
@@ -1026,7 +1029,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 <script src="model.js" charset="utf-8"></script>
 <script>
 (function () {
-  if (!window.THREE || !THREE.GLTFLoader) { window.siteFail("3D не запустилось: не загрузилась библиотека"); return; }
+  if (!window.THREE || !THREE.GLTFLoader) { window.siteFail("3D не запустилось: не загрузилась библиотека, THREE=" + typeof window.THREE + ", GLTFLoader=" + typeof (window.THREE && THREE.GLTFLoader)); return; }
   var canvas = document.getElementById("jaw"), renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: "high-performance" }); } catch (e) { window.siteFail("3D не запустилось: в браузере выключен WebGL"); return; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
