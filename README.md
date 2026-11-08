@@ -17,6 +17,6 @@
 
 ## Авторство
 
-3D-модель [Human teeth](https://sketchfab.com/3d-models/human-teeth-c4c569f0e08948e2a572007a7a5726f2), Alexander Antipov, лицензия [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Модель изменена: зубы разделены, пережаты текстуры, добавлены налёт и инструменты.
+3D-модель [Human teeth](https://sketchfab.com/3d-models/human-teeth-c4c569f0e08948e2a572007a7a5726f2), Alexander Antipov, лицензия [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Модель изменена: зубы разделены, пережаты текстуры (в том числе карта нормалей), добавлены налёт и инструменты.
 
 three.js — лицензия MIT.
