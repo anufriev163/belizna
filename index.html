@@ -88,7 +88,6 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .world canvas { position: absolute; left: 0; top: 0; will-change: transform; }
 
 /* ---------- Сцена: на первом экране во весь экран, при прокрутке сжимается в круг ---------- */
-.band { position: fixed; z-index: 2; left: 0; right: 0; top: 0; height: 0; opacity: 0; pointer-events: none; background: linear-gradient(#fff 88%, rgb(255 255 255 / 0)); }
 .stage { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
 .port { position: absolute; left: 0; top: 0; overflow: hidden; border-radius: 50%; contain: strict; will-change: transform; }
 .inner { position: absolute; left: 0; top: 0; will-change: transform; }
@@ -326,7 +325,6 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 .grab.drag { cursor: grabbing; }
 .grab span { position: absolute; left: 50%; bottom: 9%; translate: -50% 0; padding: 9px 13px; border-radius: 999px; background: rgb(18 50 74 / .72); color: #fff; font: 700 11px/1 "Unbounded", sans-serif; white-space: nowrap; transition: opacity .4s; pointer-events: none; }
 .grab.used span { opacity: 0; }
-.grab.small span { display: none; }
 .no3d .grab { display: none; }
 
 /* Появление текста: карточка выезжает от круга, внутри всё проявляется по очереди */
@@ -369,7 +367,6 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 /* Телефон и планшет вертикально: круг сверху по центру, карточка под ним.
    В обычных разделах (цены, врачи…) круг уходит, остаётся сайт. */
 @media (max-width: 1100px) and (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
-  .grab { touch-action: none; }
   .sec { grid-template-columns: minmax(0, 1fr); width: calc(100% - 32px); }
   .sec .l, .sec .r { grid-column: 1; max-width: none; }
   .film { min-height: max(calc(var(--h, 140vh) * .8), 130vh); }
@@ -385,7 +382,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .row { margin-top: 16px; gap: 12px; }
   .row .price { font-size: 22px; }
   .row .btn { padding: 14px 20px; }
-  .plain { min-height: 0; padding: var(--pb, 250px) 0 10px; display: grid; gap: 16px; align-items: start; }
+  .plain { min-height: 0; padding: 40px 0 10px; display: grid; gap: 16px; align-items: start; }
   .plain .l, .plain .r { padding: 24px 22px; border-radius: 26px; background: rgb(255 255 255 / .72); }
   .plain h2 { font-size: clamp(24px, 4.4vw, 30px); }
   .plain.split .doc { display: grid; }
@@ -454,28 +451,6 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .nav { gap: 16px; }
   .nav .links a { padding: 9px 9px; }
 }
-.pm .film .tx, .pm .plain .l, .pm .plain .r { zoom: 1.1; }
-.pm .sec { width: calc(100% - 170px); column-gap: 110px; }
-.pm .film .pin { column-gap: 110px; }
-.pm .sec.book { width: calc(100% - 80px); column-gap: 24px; grid-template-columns: minmax(0, 1fr) 300px minmax(0, 1fr); }
-.pm .book .l, .pm .book .r { max-width: none; }
-.pm .edge { position: fixed; z-index: 2; left: 0; right: 0; height: 15vh; pointer-events: none; }
-.pm .edge.t { top: 0; background: linear-gradient(#fff 35%, rgb(255 255 255 / 0)); }
-.pm .edge.b { bottom: 0; background: linear-gradient(rgb(255 255 255 / 0), #fff 65%); }
-.pm .film .tx, .pm .film[data-c] .tx { max-width: 430px; padding: 26px 28px; }
-.pm .plain.split .l, .pm .plain.split .r { max-width: 470px; }
-/* Шапка как на телефоне, только увеличена под масштаб страницы */
-.pm .intro-name { font-size: 230px; }
-.pm .intro { bottom: 360px; }
-.pm .hint { zoom: 2.6; }
-.pm .nav { zoom: 2.7; top: 6px; gap: 12px; }
-.pm .nav .links { display: none; }
-.pm .burger { display: block; }
-.pm .book-top { padding: 11px 15px; font-size: 11px; }
-.pm .nav-fade { height: 250px; }
-.pm .menu { display: flex; padding: 260px 80px 80px; }
-.pm .menu-links a { font-size: 96px; }
-.pm .menu-foot { zoom: 2.7; }
 .skip { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: #12324A; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
 .skip:focus { top: 12px; }
 .book .check { padding: 6px 0; }
@@ -517,11 +492,9 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 <a class="skip" href="#main">К содержимому</a>
 <p class="sr">Анимация: модель челюсти с налётом, воспалёнными дёснами, тёмной эмалью и кривыми зубами. При прокрутке скейлер снимает налёт, ершик чистит между зубами, чашечка полирует, капа с гелем и лампа отбеливают, элайнер выравнивает зубы. В конце — чистая ровная белая улыбка.</p>
 <div class="world" aria-hidden="true"></div>
-<div class="edge t" aria-hidden="true"></div><div class="edge b" aria-hidden="true"></div>
-<div class="band" aria-hidden="true"></div>
 <div class="stage" aria-hidden="true"><div class="port"><div class="inner"><div class="bg"></div><div class="glow"></div><canvas id="jaw"></canvas></div></div></div>
 <div class="ring" aria-hidden="true"></div>
-<div class="grab" aria-hidden="true"><span>← Покрутите · щипком — ближе →</span></div>
+<div class="grab" aria-hidden="true"><span>← Покрутите →</span></div>
 <div class="cmp" role="slider" tabindex="-1" aria-label="Было и стало" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><i class="cmp-line"></i><b class="cmp-knob" aria-hidden="true"></b><span class="cmp-tag a">Было</span><span class="cmp-tag b">Стало</span></div>
 <div class="nav-fade" aria-hidden="true"></div>
 <div class="veil" aria-hidden="true"></div>
@@ -869,7 +842,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       if (!el) return;
       e.preventDefault();
       var r = el.getBoundingClientRect(), top = r.top + window.scrollY, H = window.innerHeight;
-      if (window.siteLayout() === "side" || !el.classList.contains("film")) top -= window.siteLayout() === "wide" ? 0 : window.siteLayout() === "stack" && el.classList.contains("plain") ? 0 : 70;
+      if (window.siteLayout() === "side" || !el.classList.contains("film")) top -= window.siteLayout() === "wide" ? 0 : 70;
       else if (el.classList.contains("film")) top += (r.height - H) / 2;   // середина раздела: круг уже доехал
       var y = a.getAttribute("href") === "#top" ? 0 : top;
       if (Math.abs(y - window.scrollY) > H * 1.2) jump(y); else { ticket++; veil.classList.remove("on"); glide(y); }
@@ -1121,34 +1094,25 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     }
     return pts[pts.length - 1];
   }
-  function baseD() { return Math.min(H * .72, W * (document.documentElement.classList.contains("pm") ? .52 : .42)); }
+  function baseD() { return Math.min(H * .72, W * .42); }
   // Круг над карточкой. Высоту берём при смене ширины: адресная строка телефона не должна его дёргать
   var W0 = 0, H0 = 0;
   // Круг занимает всё место, что остаётся над самой высокой карточкой, чтобы под ней не было пустоты
   var cardH = 0;
   function stackD() {
     if (W !== W0) { W0 = W; H0 = H; }
-    var base = Math.min(W * .7, H0 * .38, 460), room = H0 - 96 - cardH + 6;
-    return cardH ? Math.max(base, Math.min(room, W * 1.02, 470)) : base;
+    var base = Math.min(W * .62, H0 * .34, 440), room = H0 - 96 - cardH - 48;
+    return cardH ? Math.max(base, Math.min(room, W * .86, 440)) : base;
   }
   var sp = { on: false, x: 0, y: 0, d: 0, vx: 0, vy: 0, vd: 0 };
   window.addEventListener("site:jump", function () { sp.on = false; sp.vx = sp.vy = sp.vd = 0; });
-  // Плашка под кругом: текст уходит под неё, пока круг стоит наверху простых разделов
-  var bandEl = document.querySelector(".band");
-  function band(v, D, k) {
-    var o = clamp((k - .55) / .3);
-    bandEl.style.opacity = o.toFixed(3);
-    bandEl.style.height = (84 + D + 22) + "px";
-    document.documentElement.style.setProperty("--band", (84 + D + 22).toFixed(0) + "px");
-  }
   function circleAt(k) {
     var L = window.siteLayout(), tg = circTarget(), D, cx1, cy1, R0 = Math.hypot(W, H) / 2 + 20;
-    circ.pw = 0;
-    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; circ.pw = clamp((1 - tg.v) / .42); cx1 = W / 2 + (tg.c || 0) * W * .2 * circ.pw; cy1 = 84 + D / 2 + 6 * circ.pw; band(tg.v, D, k); }
+    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; cx1 = W / 2; cy1 = 84 + circ.Z / 2; }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
-    else { D = circ.Z = baseD() * (document.documentElement.classList.contains("pm") ? (tg.d > 1 ? 1 - (tg.d - 1) * 2.2 : tg.d * .75) : tg.d); cx1 = W / 2 + tg.c * W * (document.documentElement.classList.contains("pm") ? .235 : .24); cy1 = H / 2 + (tg.y || 0) * H; }
+    else { D = circ.Z = baseD() * tg.d; cx1 = W / 2 + tg.c * W * .24; cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
-    circ.g = (L === "stack" ? ((tg.v || 0) > .4 ? 1 : 0) : (tg.g || 0)) * (k > .99 ? 1 : 0);
+    circ.g = (tg.g || 0) * (k > .99 && L !== "stack" ? 1 : 0);
     // Пружина: круг слегка отстаёт на старте и мягко докатывается с маленьким перелётом
     var dt = Math.min(.033, circ.dt || .016);
     if (!sp.on) { sp.on = true; sp.x = cx1; sp.y = cy1; sp.d = D; }
@@ -1172,13 +1136,12 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     segs = [].slice.call(document.querySelectorAll("[data-p]")).map(function (el) {
       var r = el.getBoundingClientRect(), pp = el.dataset.p.split(" ");
       var top = r.top + window.scrollY;
-      return { top: top, h: r.height, mid: top + r.height / 2, a: +pp[0], b: +pp[1], c: +(el.dataset.c || 0), d: +(el.dataset.d || 1), y: +(el.dataset.y || 0), v: el.classList.contains("plain") ? (window.siteLayout() === "stack" ? .62 : 0) : 1, m: el.dataset.cmp ? 1 : 0, g: el.classList.contains("split") ? 1 : 0 };
+      return { top: top, h: r.height, mid: top + r.height / 2, a: +pp[0], b: +pp[1], c: +(el.dataset.c || 0), d: +(el.dataset.d || 1), y: +(el.dataset.y || 0), v: el.classList.contains("plain") ? 0 : 1, m: el.dataset.cmp ? 1 : 0, g: el.classList.contains("split") ? 1 : 0 };
     });
     document.documentElement.style.setProperty("--gap", (baseD() * .62 + 56).toFixed(0) + "px");
     cardH = 0;
     if (window.siteLayout() === "stack") [].forEach.call(document.querySelectorAll(".film .tx"), function (e) { cardH = Math.max(cardH, e.offsetHeight); });
-    document.documentElement.style.setProperty("--stk", (stackD() + 86).toFixed(0) + "px");
-    document.documentElement.style.setProperty("--pb", (84 + stackD() * .62 + 8).toFixed(0) + "px");
+    document.documentElement.style.setProperty("--stk", (stackD() + 96).toFixed(0) + "px");
   }
   function filmP() {
     var yc = window.scrollY + H / 2, p = segs.length ? segs[0].a : 0;
@@ -1434,37 +1397,20 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       shotState(name, clamp(d0), stA); aimTmp.copy(stA.aim);
       orbit(stA.az, stA.el, stA.r);
     }
-    var azShift = 0, rot = { y: 0, x: 0, z: 1, vy: 0, vx: 0, drag: false, idle: 9, used: false, on: false }, grabEl = document.querySelector(".grab"), gx = 0, gy = 0;
-    var ptrs = {}, pinch0 = 0, z0 = 1;
-    function ptrDist() { var k = Object.keys(ptrs); return k.length < 2 ? 0 : Math.hypot(ptrs[k[0]].x - ptrs[k[1]].x, ptrs[k[0]].y - ptrs[k[1]].y); }
+    var azShift = 0, rot = { y: 0, x: 0, vy: 0, vx: 0, drag: false, idle: 9, used: false, on: false }, grabEl = document.querySelector(".grab"), gx = 0, gy = 0;
     grabEl.addEventListener("pointerdown", function (e) {
-      ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
       rot.drag = true; gx = e.clientX; gy = e.clientY; grabEl.classList.add("drag");
       if (!rot.used) { rot.used = true; grabEl.classList.add("used"); }
-      if (Object.keys(ptrs).length === 2) { pinch0 = ptrDist(); z0 = rot.z; }
       if (grabEl.setPointerCapture) grabEl.setPointerCapture(e.pointerId);
     });
     grabEl.addEventListener("pointermove", function (e) {
-      if (!rot.drag || !ptrs[e.pointerId]) return;
-      ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
-      rot.idle = 0;
-      if (Object.keys(ptrs).length >= 2) {   // щипок: приблизить и отдалить
-        if (pinch0 > 10) rot.z = Math.max(.7, Math.min(2.4, z0 * ptrDist() / pinch0));
-        return;
-      }
+      if (!rot.drag) return;
       var dx = e.clientX - gx, dy = e.clientY - gy; gx = e.clientX; gy = e.clientY;
       rot.y = Math.max(-80, Math.min(80, rot.y - dx * .45)); rot.vy = -dx * 27;
-      if (e.pointerType === "mouse" || window.siteLayout() === "stack") { rot.x = Math.max(-15, Math.min(18, rot.x + dy * .15)); rot.vx = dy * 9; }
+      if (e.pointerType === "mouse") { rot.x = Math.max(-15, Math.min(18, rot.x + dy * .15)); rot.vx = dy * 9; }
+      rot.idle = 0;
     });
-    ["pointerup", "pointercancel"].forEach(function (n) {
-      grabEl.addEventListener(n, function (e) {
-        delete ptrs[e.pointerId];
-        var k = Object.keys(ptrs);
-        if (k.length) { gx = ptrs[k[0]].x; gy = ptrs[k[0]].y; pinch0 = 0; return; }
-        rot.drag = false; grabEl.classList.remove("drag");
-      });
-    });
-    grabEl.addEventListener("dblclick", function () { rot.z = 1; rot.idle = 9; });
+    ["pointerup", "pointercancel"].forEach(function (n) { grabEl.addEventListener(n, function () { rot.drag = false; grabEl.classList.remove("drag"); }); });
     // Вращение: инерция после броска, потом челюсть сама плавно возвращается
     function spinStep(dt) {
       var show = circ.g > .9 && circ.m < .01;
@@ -1472,24 +1418,23 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       if (show) {
         var s = (circ.r * 2).toFixed(1) + "px";
         grabEl.style.width = grabEl.style.height = s;
-        grabEl.classList.toggle("small", circ.r < 110);
         grabEl.style.transform = "translate3d(" + (circ.cx - circ.r).toFixed(1) + "px," + (circ.cy - circ.r).toFixed(1) + "px,0)";
       }
       if (rot.drag) return;
       rot.idle += dt;
       rot.y = Math.max(-80, Math.min(80, rot.y + rot.vy * dt)); rot.x = Math.max(-15, Math.min(18, rot.x + rot.vx * dt));
       rot.vy *= Math.exp(-dt * 4); rot.vx *= Math.exp(-dt * 4);
-      if (rot.idle > 2.5 || !show) { var back = 1 - Math.exp(-dt * 2.5); rot.y -= rot.y * back; rot.x -= rot.x * back; rot.z += (1 - rot.z) * back * .6; }
+      if (rot.idle > 2.5 || !show) { var back = 1 - Math.exp(-dt * 2.5); rot.y -= rot.y * back; rot.x -= rot.x * back; }
     }
     function orbit(az, el, r) {
-      var pw = circ.pw || 0; az += azShift + rot.y + pw * 32 * Math.sin(scrollY / 240); el += rot.x + pw * 6 * Math.sin(scrollY / 170); r -= azShift * .12;   // в «было / стало» камера чуть ближе
+      az += azShift + rot.y; el += rot.x; r -= azShift * .12;   // в «было / стало» камера чуть ближе
       camera.position.set(aimTmp.x + Math.sin(az * DEG) * Math.cos(el * DEG) * r, aimTmp.y + Math.sin(el * DEG) * r, aimTmp.z + Math.cos(az * DEG) * Math.cos(el * DEG) * r);
       camera.lookAt(aimTmp);
       // Крупно на первом экране, потом вписываем в круг и ставим в его центр
       var tanF = Math.tan(camera.fov * DEG / 2), k = circ.k;
       // На невысоком экране челюсть меньше, чтобы не наезжать на название
-      var zHero = (W / H < .62 ? .48 : W / H < .8 ? .58 : .64 * Math.max(.72, Math.min(1, (H - 300) / 560))) * 1.15, zCirc = .6 * (window.siteLayout() === "stack" ? circ.D : circ.Z) * tanF / (.212 * H);
-      camera.zoom = (zHero + (zCirc - zHero) * k) * (1 + (rot.z - 1) * k);
+      var zHero = (W / H < .62 ? .48 : W / H < .8 ? .58 : .64 * Math.max(.72, Math.min(1, (H - 300) / 560))) * 1.15, zCirc = .6 * circ.Z * tanF / (.212 * H);
+      camera.zoom = zHero + (zCirc - zHero) * k;
       camera.setViewOffset(W, H, -(circ.cx - W / 2), (W / H < .8 ? .14 : .15) * H * (1 - k) - (circ.cy - H / 2), W, H);   // на первом экране челюсть чуть выше: снизу название
     }
 
