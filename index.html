@@ -368,6 +368,8 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
    В обычных разделах (цены, врачи…) круг уходит, остаётся сайт. */
 @media (max-width: 699px) and (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
   .bg { background: #fff; }
+  .grab { touch-action: none; }
+  .grab span { display: none; }
   .sec { grid-template-columns: minmax(0, 1fr); width: calc(100% - 32px); }
   .sec .l, .sec .r { grid-column: 1; max-width: none; }
   .film { min-height: max(calc(var(--h, 140vh) * .8), 130vh); }
@@ -1165,7 +1167,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
     else { D = circ.Z = baseD() * tg.d * (W < 1000 && tg.d > 1 ? .86 : 1); cx1 = W / 2 + tg.c * W * .24; cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
-    circ.g = (tg.g || 0) * (k > .99 && L !== "stack" ? 1 : 0);
+    circ.g = (L === "stack" ? (tg.v || 0) : (tg.g || 0)) * (k > .99 ? 1 : 0);
     // Пружина: круг слегка отстаёт на старте и мягко докатывается с маленьким перелётом
     var dt = Math.min(.033, circ.dt || .016);
     if (!sp.on) { sp.on = true; sp.x = cx1; sp.y = cy1; sp.d = D; }
@@ -1460,20 +1462,37 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       shotState(name, clamp(d0), stA); aimTmp.copy(stA.aim);
       orbit(stA.az, stA.el, stA.r);
     }
-    var azShift = 0, rot = { y: 0, x: 0, vy: 0, vx: 0, drag: false, idle: 9, used: false, on: false }, grabEl = document.querySelector(".grab"), gx = 0, gy = 0;
+    var azShift = 0, rot = { y: 0, x: 0, z: 1, vy: 0, vx: 0, drag: false, idle: 9, used: false, on: false }, grabEl = document.querySelector(".grab"), gx = 0, gy = 0;
+    var ptrs = {}, pinch0 = 0, z0 = 1;
+    function ptrDist() { var k = Object.keys(ptrs); return k.length < 2 ? 0 : Math.hypot(ptrs[k[0]].x - ptrs[k[1]].x, ptrs[k[0]].y - ptrs[k[1]].y); }
     grabEl.addEventListener("pointerdown", function (e) {
+      ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
       rot.drag = true; gx = e.clientX; gy = e.clientY; grabEl.classList.add("drag");
       if (!rot.used) { rot.used = true; grabEl.classList.add("used"); }
+      if (Object.keys(ptrs).length === 2) { pinch0 = ptrDist(); z0 = rot.z; }
       if (grabEl.setPointerCapture) grabEl.setPointerCapture(e.pointerId);
     });
     grabEl.addEventListener("pointermove", function (e) {
-      if (!rot.drag) return;
+      if (!rot.drag || !ptrs[e.pointerId]) return;
+      ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+      rot.idle = 0;
+      if (Object.keys(ptrs).length >= 2) {   // щипок: приблизить и отдалить
+        if (pinch0 > 10) rot.z = Math.max(.7, Math.min(2.4, z0 * ptrDist() / pinch0));
+        return;
+      }
       var dx = e.clientX - gx, dy = e.clientY - gy; gx = e.clientX; gy = e.clientY;
       rot.y = Math.max(-80, Math.min(80, rot.y - dx * .45)); rot.vy = -dx * 27;
-      if (e.pointerType === "mouse") { rot.x = Math.max(-15, Math.min(18, rot.x + dy * .15)); rot.vx = dy * 9; }
-      rot.idle = 0;
+      if (e.pointerType === "mouse" || window.siteLayout() === "stack") { rot.x = Math.max(-15, Math.min(18, rot.x + dy * .15)); rot.vx = dy * 9; }
     });
-    ["pointerup", "pointercancel"].forEach(function (n) { grabEl.addEventListener(n, function () { rot.drag = false; grabEl.classList.remove("drag"); }); });
+    ["pointerup", "pointercancel"].forEach(function (n) {
+      grabEl.addEventListener(n, function (e) {
+        delete ptrs[e.pointerId];
+        var k = Object.keys(ptrs);
+        if (k.length) { gx = ptrs[k[0]].x; gy = ptrs[k[0]].y; pinch0 = 0; return; }
+        rot.drag = false; grabEl.classList.remove("drag");
+      });
+    });
+    grabEl.addEventListener("dblclick", function () { rot.z = 1; rot.idle = 9; });
     // Вращение: инерция после броска, потом челюсть сама плавно возвращается
     function spinStep(dt) {
       var show = circ.g > .9 && circ.m < .01;
@@ -1487,7 +1506,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       rot.idle += dt;
       rot.y = Math.max(-80, Math.min(80, rot.y + rot.vy * dt)); rot.x = Math.max(-15, Math.min(18, rot.x + rot.vx * dt));
       rot.vy *= Math.exp(-dt * 4); rot.vx *= Math.exp(-dt * 4);
-      if (rot.idle > 2.5 || !show) { var back = 1 - Math.exp(-dt * 2.5); rot.y -= rot.y * back; rot.x -= rot.x * back; }
+      if (rot.idle > 2.5 || !show) { var back = 1 - Math.exp(-dt * 2.5); rot.y -= rot.y * back; rot.x -= rot.x * back; rot.z += (1 - rot.z) * back * .6; }
     }
     function orbit(az, el, r) {
       az += azShift + rot.y; el += rot.x; r -= azShift * .12;   // в «было / стало» камера чуть ближе
@@ -1497,7 +1516,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       var tanF = Math.tan(camera.fov * DEG / 2), k = circ.k;
       // На невысоком экране челюсть меньше, чтобы не наезжать на название
       var zHero = (W / H < .62 ? .48 : W / H < .8 ? .58 : .64 * Math.max(.72, Math.min(1, (H - 300) / 560))) * 1.15, zCirc = .6 * circ.Z * tanF / (.212 * H);
-      camera.zoom = zHero + (zCirc - zHero) * k;
+      camera.zoom = (zHero + (zCirc - zHero) * k) * (1 + (rot.z - 1) * k);
       camera.setViewOffset(W, H, -(circ.cx - W / 2), (W / H < .8 ? .14 : .15) * H * (1 - k) - (circ.cy - H / 2), W, H);   // на первом экране челюсть чуть выше: снизу название
     }
 
