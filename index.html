@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Белизна</title>
+<title>Белизна — смайл-бар профилактической стоматологии</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%2312324A'/><g transform='translate(3.2 3.6) scale(.8)'><path fill='%23fff' d='M11 7.5c-3.4 0-5.5 2.7-5.5 6 0 2.6.9 4.4 1.7 6.6.7 2 .9 5.4 2.6 5.4 2.1 0 1.8-5.3 6.2-5.3s4.1 5.3 6.2 5.3c1.7 0 1.9-3.4 2.6-5.4.8-2.2 1.7-4 1.7-6.6 0-3.3-2.1-6-5.5-6-2.1 0-3.2 1-5 1s-2.9-1-5-1z'/><path fill='none' stroke='%2312324A' stroke-width='2' stroke-linecap='round' d='M11.2 12.6c1.2 2.5 3 3.7 4.8 3.7s3.6-1.2 4.8-3.7'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +12,18 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Белизна — смайл-бар">
 <meta property="og:description" content="Концепт сайта: чистка, отбеливание и элайнеры на 3D-челюсти, которая меняется при прокрутке.">
-<meta property="og:image" content="https://anufriev163.github.io/belizna/og.jpg">
+<meta property="og:site_name" content="Белизна">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:image" content="https://anufriev163.github.io/belizna/og.jpg?v=2">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="3D-челюсть и название «Белизна» на первом экране сайта">
 <meta property="og:url" content="https://anufriev163.github.io/belizna/">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Белизна — смайл-бар">
-<meta name="twitter:image" content="https://anufriev163.github.io/belizna/og.jpg">
+<meta name="twitter:description" content="Концепт сайта: чистка, отбеливание и элайнеры на 3D-челюсти, которая меняется при прокрутке.">
+<meta name="twitter:image" content="https://anufriev163.github.io/belizna/og.jpg?v=2">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://anufriev163.github.io/belizna/">
 <style>
@@ -44,7 +49,6 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 /* ---------- Первый экран: название по центру под челюстью, круглая кнопка вниз ---------- */
 .hero { position: relative; z-index: 3; pointer-events: none; }
 .intro { position: absolute; left: 16px; right: 16px; bottom: calc(max(24px, 4vh) + 112px); display: flex; flex-direction: column; align-items: center; text-align: center; }
-.intro-k { margin: 0; font: 600 12px/1 "Manrope", sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #5E6E7A; }
 .intro-name { margin: 0; font: 700 clamp(52px, 6.4vw, 100px)/1 "Manrope", sans-serif; letter-spacing: -.045em; color: #12324A; }
 /* Размер строк подгоняет скрипт: длинная строка ровно от края «Б» до края «а» */
 .intro-line { margin: .7em 0 0; font-size: 15px; line-height: 1.5; white-space: nowrap; color: #5E6E7A; }
@@ -181,7 +185,6 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .ttl .k { flex: none; }
 .k { display: inline-block; font: 600 12px/1 "Unbounded", sans-serif; padding: 8px 12px; border-radius: 999px; background: var(--tone, #EEF1F3); }
 h2 { margin: 18px 0 0; font: 700 clamp(24px, 2.2vw, 36px)/1.08 "Unbounded", sans-serif; letter-spacing: -.03em; overflow-wrap: break-word; }
-.big { font-size: clamp(26px, 2.3vw, 36px); }
 .l p, .r p { margin: 14px 0 0; color: #5E6E7A; }
 .price { display: block; margin-top: 22px; font: 700 26px/1 "Unbounded", sans-serif; }
 .price small { font: 500 14px/1 "Manrope", sans-serif; color: #5E6E7A; margin-left: 8px; }
@@ -196,9 +199,6 @@ h2 { margin: 18px 0 0; font: 700 clamp(24px, 2.2vw, 36px)/1.08 "Unbounded", sans
 .list em { display: block; font-style: normal; font-weight: 400; font-size: 14px; color: #5E6E7A; }
 .list b { font: 700 16px/1.4 "Unbounded", sans-serif; white-space: nowrap; }
 .label { font: 600 12px/1 "Unbounded", sans-serif; color: #5E6E7A; margin-bottom: 14px; }
-.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 20px; margin-top: 30px; padding-top: 26px; border-top: 1px solid #E6ECEF; }
-.facts b { display: block; font: 700 30px/1 "Unbounded", sans-serif; letter-spacing: -.03em; }
-.facts span { display: block; margin-top: 6px; font-size: 14px; color: #5E6E7A; }
 .steps { margin: 0; padding: 0; list-style: none; counter-reset: st; }
 .steps li { counter-increment: st; display: grid; grid-template-columns: 40px 1fr; padding: 14px 0; border-bottom: 1px solid #E6ECEF; }
 .steps li::before { content: "0" counter(st); font: 600 13px/1.7 "Unbounded", sans-serif; color: #5E6E7A; }
