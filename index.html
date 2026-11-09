@@ -391,11 +391,12 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .plain.split .doc { grid-template-columns: 64px 1fr; }
   .split .people { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .plain.split .l, .plain.split .r { max-width: none; justify-self: stretch; }
-  .foot { position: static; grid-column: 1 / -1; display: grid; justify-items: center; gap: 12px; margin-top: 8px; padding: 26px 8px calc(30px + env(safe-area-inset-bottom)); border-top: 1px solid rgb(18 50 74 / .1); text-align: center; font-size: 13px; line-height: 1.55; }
+  .foot { position: static; grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr); justify-content: center; justify-items: center; width: 100%; gap: 6px; margin-top: 8px; padding: 26px 8px calc(30px + env(safe-area-inset-bottom)); border-top: 1px solid rgb(18 50 74 / .1); text-align: center; font-size: 13px; line-height: 1.55; }
   .foot .cp { display: block; font-size: 14px; color: #12324A; }
   .foot .cp::after { content: none !important; }
   .foot a.pol { display: inline-block; margin-top: 6px; padding: 10px 18px; border-radius: 999px; background: rgb(18 50 74 / .06); color: #12324A; text-decoration: none; font-weight: 600; }
-  .foot span:last-child { max-width: 34ch; font-size: 12px; opacity: .8; }
+  .foot span:last-child { display: none; }
+  .foot span:first-child { display: grid; justify-items: center; gap: 10px; }
   .book { padding-bottom: 0; }
 }
 /* Планшет вертикально: обычные разделы в две колонки, круга там нет */
