@@ -487,7 +487,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .cmp-tag.a { left: 17%; } .cmp-tag.b { right: 17%; }
 }
 /* ---------- Политика конфиденциальности: окно поверх сайта с размытием ---------- */
-.pmodal { position: fixed; inset: 0; z-index: 8; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: rgb(18 50 74 / .26); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); opacity: 0; visibility: hidden; transition: opacity .38s ease, visibility 0s .38s; overscroll-behavior: contain; }
+.pmodal { position: fixed; inset: 0; z-index: 8; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: rgb(18 50 74 / .34); -webkit-backdrop-filter: blur(26px) saturate(1.15); backdrop-filter: blur(26px) saturate(1.15); opacity: 0; visibility: hidden; transition: opacity .38s ease, visibility 0s .38s; overscroll-behavior: contain; }
 .pmodal.open { opacity: 1; visibility: visible; transition: opacity .38s ease; }
 .pm-card { position: relative; width: min(680px, 100%); max-height: min(84vh, 780px); max-height: min(84dvh, 780px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 30px 32px 34px; border-radius: 30px; background: #fff; box-shadow: 0 40px 90px -30px rgb(18 50 74 / .55); color: #12324A; transform: translateY(22px) scale(.97); opacity: 0; transition: transform .55s var(--spring), opacity .35s ease; outline: 0; }
 .pmodal.open .pm-card { transform: none; opacity: 1; }
@@ -505,6 +505,20 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 520px) { .pm-card { padding: 24px 22px 28px; border-radius: 26px; } .pm-title { font-size: 18px; padding-right: 40px; } }
 @media (max-width: 360px) { .pm-title { font-size: 13px; padding-right: 8px; } }
 @media (prefers-reduced-motion: reduce) { .pm-card { transform: none; } }
+/* ---------- Плашка cookie ---------- */
+.cookie { position: fixed; z-index: 6; left: 20px; bottom: 20px; width: min(430px, calc(100% - 40px)); padding: 18px 20px 18px; border-radius: 26px; background: rgb(255 255 255 / .86); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .8), 0 24px 60px -24px rgb(18 50 74 / .5); color: #12324A; opacity: 0; visibility: hidden; transform: translateY(26px); transition: opacity .4s ease, transform .6s var(--spring), visibility 0s .6s; }
+.cookie.show { opacity: 1; visibility: visible; transform: none; transition: opacity .4s ease, transform .6s var(--spring); }
+.menu-open .cookie { opacity: 0; pointer-events: none; }
+.cookie p { margin: 0; font-size: 14px; line-height: 1.5; color: #3E5160; }
+.cookie p b { display: block; margin-bottom: 4px; font: 700 15px/1.2 "Unbounded", sans-serif; letter-spacing: -.02em; color: #12324A; }
+.cookie a { color: #12324A; text-underline-offset: 2px; }
+.cookie .ck-row { display: flex; gap: 8px; margin-top: 14px; }
+.cookie button { flex: 1; padding: 13px 14px; border: 0; border-radius: 999px; font: 700 12px/1 "Unbounded", sans-serif; cursor: pointer; transition: transform .35s var(--spring), background .25s, color .25s; }
+.cookie .ck-yes { background: #12324A; color: #fff; }
+.cookie .ck-no { background: rgb(18 50 74 / .08); color: #12324A; }
+.cookie button:active { transform: scale(.95); }
+@media (hover: hover) { .cookie .ck-yes:hover { background: #1F3FD1; } .cookie .ck-no:hover { background: rgb(18 50 74 / .15); } }
+@media (max-width: 520px) { .cookie { left: 12px; right: 12px; width: auto; bottom: max(12px, env(safe-area-inset-bottom)); padding: 16px 16px 16px; } }
 .skip { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: #12324A; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
 .skip:focus { top: 12px; }
 .book .check { padding: 6px 0; }
@@ -1805,6 +1819,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   window.siteLoop.push(tick);
 })();
 </script>
+<div class="cookie" id="cookie" role="dialog" aria-label="Файлы cookie" aria-hidden="true">
+  <p><b>Файлы cookie</b>Сайт использует cookie, чтобы работать корректно и помнить ваш выбор. Подробнее — в <a href="politika.html">политике конфиденциальности</a>.</p>
+  <div class="ck-row"><button class="ck-no" type="button">Только нужные</button><button class="ck-yes" type="button">Принять</button></div>
+</div>
 <div class="pmodal" id="policy" role="dialog" aria-modal="true" aria-labelledby="pm-title" aria-hidden="true">
   <div class="pm-card" tabindex="-1">
     <button class="pm-x" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
@@ -1833,7 +1851,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   <h2>6. Кому передаём</h2>
   <p>Мы не передаём данные третьим лицам, кроме случаев, предусмотренных законом, и сервисов, которые помогают принимать заявки: <mark>перечень сервисов</mark>.</p>
 
-  <h2>7. Ваши права</h2>
+  <h2>7. Файлы cookie</h2>
+  <p>Сайт использует только необходимые cookie и локальное хранилище браузера: они запоминают ваш выбор в плашке cookie. Рекламных и аналитических cookie нет. Сохранённый выбор можно удалить в настройках браузера.</p>
+
+  <h2>8. Ваши права</h2>
   <p>Вы можете узнать, какие данные у нас есть, уточнить или удалить их, а также отозвать согласие. Для этого напишите на <mark>электронная почта</mark>.</p>
   </div>
 </div>
@@ -1865,6 +1886,24 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       else if (!e.shiftKey && document.activeElement === end) { e.preventDefault(); first.focus(); }
     }
   });
+})();
+</script>
+<script>
+// Плашка cookie: выбор запоминается в браузере
+(function () {
+  var box = document.getElementById("cookie"), KEY = "belizna-cookie", saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved) return;
+  function show() { box.classList.add("show"); box.setAttribute("aria-hidden", "false"); }
+  function choose(v) {
+    try { localStorage.setItem(KEY, v); } catch (e) {}
+    box.classList.remove("show"); box.setAttribute("aria-hidden", "true");
+  }
+  box.querySelector(".ck-yes").addEventListener("click", function () { choose("all"); });
+  box.querySelector(".ck-no").addEventListener("click", function () { choose("necessary"); });
+  var wait = setInterval(function () {   // показываем, когда экран загрузки уже ушёл
+    if (document.documentElement.classList.contains("go")) { clearInterval(wait); setTimeout(show, 1500); }
+  }, 300);
 })();
 </script>
 </body>
