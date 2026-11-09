@@ -407,7 +407,15 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .split .people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .split .people:has(.rv) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .sec { width: calc(100% - 48px); }
+  .film .tx, .film[data-c] .tx { max-width: 720px; padding: 30px 34px 32px; border-radius: 32px; }
+  .film .tx h2, .film[data-c="0"] .tx h2, .film .tx.first h2 { font-size: clamp(30px, 4.6vw, 40px); }
+  .film .tx p { font-size: 18px; line-height: 1.55; }
+  .mini b { font-size: 19px; } .mini div { padding: 14px 16px; }
+  .row .price { font-size: 28px; }
+  .row .btn, .film .btn { font-size: 15px; }
+  .band { display: block; }
 }
+.band { display: none; position: fixed; z-index: 2; left: 0; right: 0; top: 0; height: 0; opacity: 0; pointer-events: none; background: linear-gradient(#fff 88%, rgb(255 255 255 / 0)); }
 /* Маленький телефон: всё плотнее, чтобы карточка влезала под круг */
 @media (max-width: 760px) and (max-height: 700px) and (min-height: 521px) {
   .film .tx, .film[data-c] .tx { padding: 14px 16px 16px; border-radius: 22px; }
@@ -506,6 +514,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 <a class="skip" href="#main">К содержимому</a>
 <p class="sr">Анимация: модель челюсти с налётом, воспалёнными дёснами, тёмной эмалью и кривыми зубами. При прокрутке скейлер снимает налёт, ершик чистит между зубами, чашечка полирует, капа с гелем и лампа отбеливают, элайнер выравнивает зубы. В конце — чистая ровная белая улыбка.</p>
 <div class="world" aria-hidden="true"></div>
+<div class="band" aria-hidden="true"></div>
 <div class="stage" aria-hidden="true"><div class="port"><div class="inner"><div class="bg"></div><div class="glow"></div><canvas id="jaw"></canvas></div></div></div>
 <div class="ring" aria-hidden="true"></div>
 <div class="grab" aria-hidden="true"><span>← Покрутите →</span></div>
@@ -1129,14 +1138,17 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   var cardH = 0;
   function stackD() {
     if (W !== W0) { W0 = W; H0 = H; }
-    var base = Math.min(W * .62, H0 * .34, 440), room = H0 - 96 - cardH - 48;
-    return cardH ? Math.max(base, Math.min(room, W * .86, 440)) : base;
+    var cap = W >= 700 ? 620 : 440, base = Math.min(W * .62, H0 * .34, cap), room = H0 - 96 - cardH - 48;
+    return cardH ? Math.max(base, Math.min(room, W * .86, cap)) : base;
   }
   var sp = { on: false, x: 0, y: 0, d: 0, vx: 0, vy: 0, vd: 0 };
   window.addEventListener("site:jump", function () { sp.on = false; sp.vx = sp.vy = sp.vd = 0; });
+  // Планшет вертикально: карточки уходят под белую плашку над кругом и не наезжают на него
+  var bandEl = document.querySelector(".band");
+  function tabBand(o, h) { bandEl.style.opacity = o.toFixed(3); bandEl.style.height = h.toFixed(0) + "px"; }
   function circleAt(k) {
     var L = window.siteLayout(), tg = circTarget(), D, cx1, cy1, R0 = Math.hypot(W, H) / 2 + 20;
-    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; cx1 = W / 2; cy1 = 84 + circ.Z / 2 + (tg.y || 0) * H; }
+    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; cx1 = W / 2; cy1 = 84 + circ.Z / 2 + (tg.y || 0) * H; if (W >= 700) tabBand(clamp((k - .55) / .3) * clamp(tg.v || 0), 84 + D + 22); }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
     else { D = circ.Z = baseD() * tg.d; cx1 = W / 2 + tg.c * W * .24; cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
