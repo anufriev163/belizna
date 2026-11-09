@@ -1214,6 +1214,22 @@ main, .world, .stage { transition: filter .4s ease; }
   // Планшет вертикально: карточки уходят под белую плашку над кругом и не наезжают на него
   var bandEl = document.querySelector(".band");
   function tabBand(o, h) { bandEl.style.opacity = o.toFixed(3); bandEl.style.height = h.toFixed(0) + "px"; }
+  // Пока круг пролетает над карточкой (на компьютере и планшете), она бледнеет, и текст не смешивается с челюстью
+  var cardEls = [].slice.call(document.querySelectorAll('.film:not([data-c="0"]) .tx, .plain .l, .plain .r')), vis = 1;
+  function fadeUnderCircle(k) {
+    var on = window.siteLayout() === "wide" && W >= 1200 && k > .9 && circ.r > 30;
+    if (!on) { if (vis) { cardEls.forEach(function (e) { e.style.filter = ""; }); vis = 0; } return; }
+    vis = 1;
+    for (var i = 0; i < cardEls.length; i++) {
+      var r = cardEls[i].getBoundingClientRect(), o = 1;
+      if (r.bottom > 0 && r.top < H && r.right > r.left) {
+        var nx = Math.max(r.left, Math.min(circ.cx, r.right)), ny = Math.max(r.top, Math.min(circ.cy, r.bottom));
+        var depth = circ.r - Math.hypot(nx - circ.cx, ny - circ.cy);   // насколько круг заходит на карточку
+        if (depth > 10) o = Math.max(.12, 1 - (depth - 10) / 70);
+      }
+      cardEls[i].style.filter = o < 1 ? "opacity(" + o.toFixed(2) + ")" : "";
+    }
+  }
   function circleAt(k) {
     var L = window.siteLayout(), tg = circTarget(), D, cx1, cy1, R0 = Math.hypot(W, H) / 2 + 20;
     if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; cx1 = W / 2; cy1 = 84 + circ.Z / 2 + (tg.y || 0) * H; if (W >= 700) tabBand(clamp((k - .55) / .3) * clamp(tg.v || 0), 84 + D + 22); }
@@ -1238,6 +1254,7 @@ main, .world, .stage { transition: filter .4s ease; }
       innerEl.style.transform = "translate3d(" + -X + "px," + -Y + "px,0)";
     }
     ringEl.style.opacity = clamp((k - .6) / .4) * clamp(circ.r / 24);
+    fadeUnderCircle(k);
     glowEl.style.opacity = k.toFixed(3);
   }
   function measure() {
