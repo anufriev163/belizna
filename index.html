@@ -399,21 +399,28 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .foot span:first-child { display: grid; justify-items: center; gap: 10px; }
   .book { padding-bottom: 0; }
 }
-/* Планшет вертикально: обычные разделы в две колонки, круга там нет */
-@media (min-width: 700px) and (max-width: 1100px) and (orientation: portrait) and (max-width: 0px) {
-  .plain { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-top: 60px; }
-  .sec.plain .r { grid-column: 2; }
-  .sec.plain.split .l, .sec.plain.split .r { grid-column: 1 / -1; }
-  .split .people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .split .people:has(.rv) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .sec { width: calc(100% - 48px); }
-  .film .tx, .film[data-c] .tx { max-width: 720px; padding: 30px 34px 32px; border-radius: 32px; }
-  .film .tx h2, .film[data-c="0"] .tx h2, .film .tx.first h2 { font-size: clamp(30px, 4.6vw, 40px); }
-  .film .tx p { font-size: 18px; line-height: 1.55; }
-  .mini b { font-size: 19px; } .mini div { padding: 14px 16px; }
-  .row .price { font-size: 28px; }
-  .row .btn, .film .btn { font-size: 15px; }
-  .band { display: block; }
+/* Планшет вертикально: та же раскладка, что на ПК, чуть компактнее */
+@media (min-width: 700px) and (max-width: 1100px) and (orientation: portrait) {
+  .sec { width: calc(100% - 40px); }
+  .film .tx, .film[data-c] .tx { padding: 24px 26px 26px; border-radius: 28px; }
+  .film .tx h2 { font-size: 30px; }
+  .film .tx p { font-size: 16px; line-height: 1.55; }
+  .film.cmpsec .tx { padding-top: 56vh; }
+  .film.cmpsec .tx h2 { font-size: 36px; }
+  .film.cmpsec .tx p { font-size: 19px; }
+  .plain.split .l, .plain.split .r { padding: 22px 24px; max-width: none; border-radius: 28px; }
+  .plain h2 { font-size: 28px; }
+  .plain .l p, .plain .r p { font-size: 15px; }
+  .plain .list span { font-size: 15px; } .plain .list em { font-size: 12.5px; } .plain .list b { font-size: 15px; }
+  .split .list li { padding: 8px 0; }
+  .plain .rv p { font-size: 14.5px; }
+  .plain .faq summary { font-size: 14px; padding-top: 14px; padding-bottom: 14px; }
+  .plain .steps b { font-size: 15px; } .plain .steps li { padding: 10px 0; }
+  .plain .doc b { font-size: 15px; } .plain .doc span { font-size: 13px; }
+  .sec.book { grid-template-columns: minmax(0, 1fr) 210px minmax(0, 1fr); column-gap: 16px; }
+  .book h2 { font-size: 21px; overflow-wrap: anywhere; }
+  .book .l p { font-size: 14px; }
+  .foot { font-size: 12px; gap: 6px 16px; }
 }
 .band { display: none; position: fixed; z-index: 2; left: 0; right: 0; top: 0; height: 0; opacity: 0; pointer-events: none; background: linear-gradient(#fff 88%, rgb(255 255 255 / 0)); }
 /* Маленький телефон: всё плотнее, чтобы карточка влезала под круг */
@@ -1150,7 +1157,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     var L = window.siteLayout(), tg = circTarget(), D, cx1, cy1, R0 = Math.hypot(W, H) / 2 + 20;
     if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; cx1 = W / 2; cy1 = 84 + circ.Z / 2 + (tg.y || 0) * H; if (W >= 700) tabBand(clamp((k - .55) / .3) * clamp(tg.v || 0), 84 + D + 22); }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
-    else { D = circ.Z = baseD() * tg.d; cx1 = W / 2 + tg.c * W * .24; cy1 = H / 2 + (tg.y || 0) * H; }
+    else { D = circ.Z = baseD() * tg.d * (W < 1000 && tg.d > 1 ? .86 : 1); cx1 = W / 2 + tg.c * W * .24; cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
     circ.g = (tg.g || 0) * (k > .99 && L !== "stack" ? 1 : 0);
     // Пружина: круг слегка отстаёт на старте и мягко докатывается с маленьким перелётом
