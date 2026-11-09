@@ -405,6 +405,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .film .tx, .film[data-c] .tx { padding: 24px 26px 26px; border-radius: 28px; }
   .film .tx h2 { font-size: 30px; }
   .film .tx p { font-size: 16px; line-height: 1.55; }
+  .film[data-c="0"] .tx { padding: 51vh 0 0; background: none; box-shadow: none; border-radius: 0; }
   .film.cmpsec .tx { padding-top: 56vh; }
   .film.cmpsec .tx h2 { font-size: 36px; }
   .film.cmpsec .tx p { font-size: 19px; }
@@ -417,9 +418,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .plain .faq summary { font-size: 14px; padding-top: 14px; padding-bottom: 14px; }
   .plain .steps b { font-size: 15px; } .plain .steps li { padding: 10px 0; }
   .plain .doc b { font-size: 15px; } .plain .doc span { font-size: 13px; }
-  .sec.book { grid-template-columns: minmax(0, 1fr) 210px minmax(0, 1fr); column-gap: 16px; }
-  .book h2 { font-size: 21px; overflow-wrap: anywhere; }
-  .book .l p { font-size: 14px; }
+  .sec.book { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 20px; }
+  .sec.book .l { grid-column: 1; justify-self: stretch; } .sec.book .r { grid-column: 2; justify-self: stretch; }
+  .book h2 { font-size: 26px; }
+  .book .l p { font-size: 15px; }
   .foot { font-size: 12px; gap: 6px 16px; }
 }
 .band { display: none; position: fixed; z-index: 2; left: 0; right: 0; top: 0; height: 0; opacity: 0; pointer-events: none; background: linear-gradient(#fff 88%, rgb(255 255 255 / 0)); }
@@ -477,6 +479,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .nav-fade { transition: opacity .3s ease; }
   .scrolling:not(.menu-open) .nav { translate: 0 -140%; opacity: 0; pointer-events: none; }
   .scrolling:not(.menu-open) .nav-fade { opacity: 0; }
+}
+@media (max-width: 360px) {
+  .cmp-tag { top: 15%; padding: 6px 8px; font-size: 9px; }
+  .cmp-tag.a { left: 17%; } .cmp-tag.b { right: 17%; }
 }
 .skip { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: #12324A; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
 .skip:focus { top: 12px; }
@@ -1190,13 +1196,14 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     if (window.siteLayout() === "stack") [].forEach.call(document.querySelectorAll(".film .tx"), function (e) { cardH = Math.max(cardH, e.offsetHeight); });
     document.documentElement.style.setProperty("--stk", (stackD() + 96).toFixed(0) + "px");
     // Телефон: у коротких карточек («Чистая, ровная улыбка», «Было / стало») круг опускаем ближе к карточке
-    var els = document.querySelectorAll("[data-p]"), stk = window.siteLayout() === "stack";
+    var els = document.querySelectorAll("[data-p]"), stk = window.siteLayout() === "stack", tab = window.siteLayout() === "wide" && W < 1000;
     segs.forEach(function (sg, i) {
       var el = els[i], tx = el.querySelector(".film .tx, .tx");
       if (stk && el.classList.contains("film") && +(el.dataset.d || 1) < 1 && tx) {
         var space = H0 - (stackD() + 96) - 20;
         sg.y = Math.max(0, (space - tx.offsetHeight) / 2 - 45) / H;
       } else if (stk) sg.y = 0;
+      else if (tab && el.classList.contains("book")) sg.y = -.3;   // планшет: круг над двумя широкими карточками
     });
   }
   function filmP() {
