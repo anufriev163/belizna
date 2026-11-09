@@ -47,7 +47,8 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 @keyframes l-whiten { to { opacity: .85; } }
 
 /* ---------- Первый экран: название по центру под челюстью, круглая кнопка вниз ---------- */
-.hero { position: relative; z-index: 3; pointer-events: none; }
+.hero { position: relative; z-index: 3; pointer-events: none; opacity: var(--ho, 1); }
+.hero.off .hint { pointer-events: none; }
 .intro { position: absolute; left: 16px; right: 16px; bottom: calc(max(24px, 4vh) + 112px); display: flex; flex-direction: column; align-items: center; text-align: center; }
 .intro-name { margin: 0; font: 700 clamp(52px, 6.4vw, 100px)/1 "Manrope", sans-serif; letter-spacing: -.045em; color: #12324A; }
 /* Размер строк подгоняет скрипт: длинная строка ровно от края «Б» до края «а» */
@@ -736,6 +737,21 @@ main, .world, .stage { transition: filter .4s ease; }
 
 
 
+<script>
+// Первый экран: название и подпись гаснут в первых движениях прокрутки, пока круг не встал на место, и не наезжают на челюсть
+(function () {
+  var root = document.documentElement, hero = document.getElementById("top"), q = false;
+  function upd() {
+    q = false;
+    var o = Math.max(0, 1 - window.scrollY / (window.innerHeight * .2));
+    o = o * o * (3 - 2 * o);
+    root.style.setProperty("--ho", o.toFixed(3));
+    hero.classList.toggle("off", o < .05);
+  }
+  window.addEventListener("scroll", function () { if (!q) { q = true; requestAnimationFrame(upd); } }, { passive: true });
+  upd();
+})();
+</script>
 <script>
 // На телефоне во время прокрутки шапка и размытие уезжают, а когда прокрутка остановилась, возвращаются
 (function () {
