@@ -457,6 +457,12 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .nav { gap: 16px; }
   .nav .links a { padding: 9px 9px; }
 }
+@media (pointer: coarse) {
+  .nav { transition: translate .45s cubic-bezier(.2, .8, .2, 1), opacity .3s ease; }
+  .nav-fade { transition: opacity .3s ease; }
+  .scrolling:not(.menu-open) .nav { translate: 0 -140%; opacity: 0; pointer-events: none; }
+  .scrolling:not(.menu-open) .nav-fade { opacity: 0; }
+}
 .skip { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: #12324A; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
 .skip:focus { top: 12px; }
 .book .check { padding: 6px 0; }
@@ -670,6 +676,20 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 
 
 
+<script>
+// На телефоне во время прокрутки шапка и размытие уезжают, а когда прокрутка остановилась, возвращаются
+(function () {
+  var root = document.documentElement, t = 0, y0 = window.scrollY;
+  if (!matchMedia("(pointer: coarse)").matches) return;
+  window.addEventListener("scroll", function () {
+    if (Math.abs(window.scrollY - y0) < 3) return;
+    y0 = window.scrollY;
+    root.classList.add("scrolling");
+    clearTimeout(t);
+    t = setTimeout(function () { root.classList.remove("scrolling"); }, 180);
+  }, { passive: true });
+})();
+</script>
 <script>
 // Раскладка экрана: те же условия, что в CSS
 (function () {
