@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+// Телефон показывает ту же компьютерную раскладку целиком, уменьшенной под экран; приблизить можно щипком
+(function () {
+  if (!matchMedia("(pointer: coarse)").matches || Math.min(screen.width, screen.height) > 600) return;
+  document.querySelector("meta[name=viewport]").content = "width=1120, viewport-fit=cover";
+  document.documentElement.classList.add("pm");
+})();
+</script>
 <title>Белизна</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%2312324A'/><g transform='translate(3.2 3.6) scale(.8)'><path fill='%23fff' d='M11 7.5c-3.4 0-5.5 2.7-5.5 6 0 2.6.9 4.4 1.7 6.6.7 2 .9 5.4 2.6 5.4 2.1 0 1.8-5.3 6.2-5.3s4.1 5.3 6.2 5.3c1.7 0 1.9-3.4 2.6-5.4.8-2.2 1.7-4 1.7-6.6 0-3.3-2.1-6-5.5-6-2.1 0-3.2 1-5 1s-2.9-1-5-1z'/><path fill='none' stroke='%2312324A' stroke-width='2' stroke-linecap='round' d='M11.2 12.6c1.2 2.5 3 3.7 4.8 3.7s3.6-1.2 4.8-3.7'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -454,6 +462,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .nav { gap: 16px; }
   .nav .links a { padding: 9px 9px; }
 }
+.pm .film .tx, .pm .plain .l, .pm .plain .r { zoom: 1.3; }
 .skip { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: #12324A; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
 .skip:focus { top: 12px; }
 .book .check { padding: 6px 0; }
@@ -1098,7 +1107,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     }
     return pts[pts.length - 1];
   }
-  function baseD() { return Math.min(H * .72, W * .42); }
+  function baseD() { return Math.min(H * .72, W * (document.documentElement.classList.contains("pm") ? .54 : .42)); }
   // Круг над карточкой. Высоту берём при смене ширины: адресная строка телефона не должна его дёргать
   var W0 = 0, H0 = 0;
   // Круг занимает всё место, что остаётся над самой высокой карточкой, чтобы под ней не было пустоты
