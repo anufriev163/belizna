@@ -391,7 +391,11 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .plain.split .doc { grid-template-columns: 64px 1fr; }
   .split .people { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .plain.split .l, .plain.split .r { max-width: none; justify-self: stretch; }
-  .foot { position: static; grid-column: 1 / -1; padding: 12px 0 24px; }
+  .foot { position: static; grid-column: 1 / -1; display: grid; justify-items: center; gap: 12px; margin-top: 8px; padding: 26px 8px calc(30px + env(safe-area-inset-bottom)); border-top: 1px solid rgb(18 50 74 / .1); text-align: center; font-size: 13px; line-height: 1.55; }
+  .foot .cp { display: block; font-size: 14px; color: #12324A; }
+  .foot .cp::after { content: none !important; }
+  .foot a.pol { display: inline-block; margin-top: 6px; padding: 10px 18px; border-radius: 999px; background: rgb(18 50 74 / .06); color: #12324A; text-decoration: none; font-weight: 600; }
+  .foot span:last-child { max-width: 34ch; font-size: 12px; opacity: .8; }
   .book { padding-bottom: 0; }
 }
 /* Планшет вертикально: обычные разделы в две колонки, круга там нет */
@@ -456,7 +460,9 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 .skip:focus { top: 12px; }
 .book .check { padding: 6px 0; }
 .book .check input { width: 20px; height: 20px; flex: none; margin-top: 1px; }
-.foot a { display: inline-block; padding: 6px 0; }
+.foot a { padding: 4px 0; }
+.foot .cp { font-weight: 600; }
+.foot .cp::after { content: " ·"; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
 </style>
 </head>
@@ -657,7 +663,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     <button class="btn" type="submit">Записаться</button>
     <p class="msg" aria-live="polite"></p>
   </form>
-  <footer class="foot"><span>© 2026 Белизна · смайл-бар · <a href="politika.html" target="_blank" rel="noopener">Политика конфиденциальности</a></span><span>Концепт для портфолио: клиника, врачи и контакты вымышленные. 3D-модель <a href="https://sketchfab.com/3d-models/human-teeth-c4c569f0e08948e2a572007a7a5726f2" target="_blank" rel="noopener">Human teeth</a>, Alexander Antipov, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, изменена.</span></footer>
+  <footer class="foot"><span><b class="cp">© 2026 Белизна · смайл-бар</b> <a class="pol" href="politika.html" target="_blank" rel="noopener">Политика конфиденциальности</a></span><span>Концепт для портфолио: клиника, врачи и контакты вымышленные. 3D-модель <a href="https://sketchfab.com/3d-models/human-teeth-c4c569f0e08948e2a572007a7a5726f2" target="_blank" rel="noopener">Human teeth</a>, Alexander Antipov, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, изменена.</span></footer>
 </section>
 </main>
 
@@ -1692,6 +1698,9 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     var dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
     if (!calm) clock += dt;
     sm += (scrollY - sm) * (1 - Math.exp(-dt * 4.5));          // шарики упруго догоняют прокрутку
+    // На телефоне внизу страницы шариков нет: на белом фоне они выдают края панелей Safari
+    var left = document.documentElement.scrollHeight - innerHeight - scrollY;
+    world.style.opacity = window.siteLayout() === "wide" ? 1 : Math.max(0, Math.min(1, (left - 40) / 460)).toFixed(3);
     var ease = 1 - Math.exp(-dt * 5);
     for (var i = 0; i < items.length; i++) {
       var it = items[i], y = (it.y - sm * it.s - clock * it.v) % it.span; if (y < 0) y += it.span; y -= it.size + 20;
