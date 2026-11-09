@@ -501,6 +501,9 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 .pm-note { padding: 12px 16px; border-radius: 16px; background: rgb(18 50 74 / .05); font-size: 14px !important; }
 .pm-card mark { background: #FFF2C2; color: inherit; padding: 0 .2em; border-radius: 4px; }
 .pm-open, .pm-open body { overflow: hidden; }
+/* Размытие самого сайта: работает и там, где Safari не рисует backdrop-filter */
+main, .world, .stage { transition: filter .4s ease; }
+.pm-open main, .pm-open .world, .pm-open .stage, .pm-open .ring, .pm-open .grab, .pm-open .cmp, .pm-open .nav, .pm-open .nav-fade, .pm-open .cookie, .pm-open .band { filter: blur(18px); }
 @media (hover: hover) { .pm-x:hover { background: rgb(18 50 74 / .15); } }
 @media (max-width: 520px) { .pm-card { padding: 24px 22px 28px; border-radius: 26px; } .pm-title { font-size: 18px; padding-right: 40px; } }
 @media (max-width: 360px) { .pm-title { font-size: 13px; padding-right: 8px; } }
