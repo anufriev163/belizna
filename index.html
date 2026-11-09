@@ -462,7 +462,19 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .nav { gap: 16px; }
   .nav .links a { padding: 9px 9px; }
 }
-.pm .film .tx, .pm .plain .l, .pm .plain .r { zoom: 1.3; }
+.pm .film .tx, .pm .plain .l, .pm .plain .r { zoom: 1.1; }
+.pm .sec { width: calc(100% - 170px); }
+.pm .film .tx, .pm .film[data-c] .tx { max-width: 430px; padding: 26px 28px; }
+.pm .plain.split .l, .pm .plain.split .r { max-width: 470px; }
+/* Шапка как на телефоне, только увеличена под масштаб страницы */
+.pm .nav { zoom: 2.7; top: 6px; gap: 12px; }
+.pm .nav .links { display: none; }
+.pm .burger { display: block; }
+.pm .book-top { padding: 11px 15px; font-size: 11px; }
+.pm .nav-fade { height: 250px; }
+.pm .menu { display: flex; padding: 260px 80px 80px; }
+.pm .menu-links a { font-size: 96px; }
+.pm .menu-foot { zoom: 2.7; }
 .skip { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: #12324A; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
 .skip:focus { top: 12px; }
 .book .check { padding: 6px 0; }
@@ -1107,7 +1119,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     }
     return pts[pts.length - 1];
   }
-  function baseD() { return Math.min(H * .72, W * (document.documentElement.classList.contains("pm") ? .54 : .42)); }
+  function baseD() { return Math.min(H * .72, W * (document.documentElement.classList.contains("pm") ? .6 : .42)); }
   // Круг над карточкой. Высоту берём при смене ширины: адресная строка телефона не должна его дёргать
   var W0 = 0, H0 = 0;
   // Круг занимает всё место, что остаётся над самой высокой карточкой, чтобы под ней не было пустоты
@@ -1132,7 +1144,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     circ.pw = 0;
     if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; circ.pw = clamp((1 - tg.v) / .42); cx1 = W / 2 + (tg.c || 0) * W * .2 * circ.pw; cy1 = 84 + D / 2 + 6 * circ.pw; band(tg.v, D); }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
-    else { D = circ.Z = baseD() * tg.d; cx1 = W / 2 + tg.c * W * .24; cy1 = H / 2 + (tg.y || 0) * H; }
+    else { D = circ.Z = baseD() * (document.documentElement.classList.contains("pm") ? 1 - (tg.d - 1) * 2.2 : tg.d); cx1 = W / 2 + tg.c * W * (document.documentElement.classList.contains("pm") ? .23 : .24); cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
     circ.g = (L === "stack" ? ((tg.v || 0) > .4 ? 1 : 0) : (tg.g || 0)) * (k > .99 ? 1 : 0);
     // Пружина: круг слегка отстаёт на старте и мягко докатывается с маленьким перелётом
