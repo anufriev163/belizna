@@ -47,8 +47,7 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 @keyframes l-whiten { to { opacity: .85; } }
 
 /* ---------- Первый экран: название по центру под челюстью, круглая кнопка вниз ---------- */
-.hero { position: relative; z-index: 3; pointer-events: none; opacity: var(--ho, 1); }
-.hero.off .hint { pointer-events: none; }
+.hero { position: relative; z-index: 3; pointer-events: none; }
 .intro { position: absolute; left: 16px; right: 16px; bottom: calc(max(24px, 4vh) + 112px); display: flex; flex-direction: column; align-items: center; text-align: center; }
 .intro-name { margin: 0; font: 700 clamp(52px, 6.4vw, 100px)/1 "Manrope", sans-serif; letter-spacing: -.045em; color: #12324A; }
 /* Размер строк подгоняет скрипт: длинная строка ровно от края «Б» до края «а» */
@@ -738,18 +737,24 @@ main, .world, .stage { transition: filter .4s ease; }
 
 
 <script>
-// Первый экран: название и подпись гаснут в первых движениях прокрутки, пока круг не встал на место, и не наезжают на челюсть
+// Первый экран: если остановиться на полпути между челюстью и кругом, страница сама доезжает туда, куда вы листали
 (function () {
-  var root = document.documentElement, hero = document.getElementById("top"), q = false;
-  function upd() {
-    q = false;
-    var o = Math.max(0, 1 - window.scrollY / (window.innerHeight * .2));
-    o = o * o * (3 - 2 * o);
-    root.style.setProperty("--ho", o.toFixed(3));
-    hero.classList.toggle("off", o < .05);
+  var root = document.documentElement, t = 0, auto = false, prev = window.scrollY, dir = 1;
+  function check() {
+    var y = window.scrollY, end = window.innerHeight * .98;
+    if (y < 6 || y > end - 4) return;
+    if (root.classList.contains("menu-open") || root.classList.contains("pm-open") || !window.siteGlide) return;
+    auto = true;
+    window.siteGlide(dir > 0 ? end : 0);
+    setTimeout(function () { auto = false; }, 1200);
   }
-  window.addEventListener("scroll", function () { if (!q) { q = true; requestAnimationFrame(upd); } }, { passive: true });
-  upd();
+  window.addEventListener("scroll", function () {
+    var y = window.scrollY;
+    if (Math.abs(y - prev) > 1) { dir = y > prev ? 1 : -1; prev = y; }
+    clearTimeout(t);
+    if (auto) return;
+    t = setTimeout(check, 190);
+  }, { passive: true });
 })();
 </script>
 <script>
@@ -940,6 +945,7 @@ main, .world, .stage { transition: filter .4s ease; }
       if (t < 1) id = requestAnimationFrame(step);
     })(t0);
   }
+  window.siteGlide = glide;
   ["wheel", "touchstart"].forEach(function (ev) { window.addEventListener(ev, function () { cancelAnimationFrame(id); }, { passive: true }); });
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     a.addEventListener("click", function (e) {
