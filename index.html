@@ -463,10 +463,19 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .nav .links a { padding: 9px 9px; }
 }
 .pm .film .tx, .pm .plain .l, .pm .plain .r { zoom: 1.1; }
-.pm .sec { width: calc(100% - 170px); }
+.pm .sec { width: calc(100% - 170px); column-gap: 110px; }
+.pm .film .pin { column-gap: 110px; }
+.pm .sec.book { width: calc(100% - 80px); column-gap: 24px; grid-template-columns: minmax(0, 1fr) 300px minmax(0, 1fr); }
+.pm .book .l, .pm .book .r { max-width: none; }
+.pm .edge { position: fixed; z-index: 2; left: 0; right: 0; height: 15vh; pointer-events: none; }
+.pm .edge.t { top: 0; background: linear-gradient(#fff 35%, rgb(255 255 255 / 0)); }
+.pm .edge.b { bottom: 0; background: linear-gradient(rgb(255 255 255 / 0), #fff 65%); }
 .pm .film .tx, .pm .film[data-c] .tx { max-width: 430px; padding: 26px 28px; }
 .pm .plain.split .l, .pm .plain.split .r { max-width: 470px; }
 /* Шапка как на телефоне, только увеличена под масштаб страницы */
+.pm .intro-name { font-size: 230px; }
+.pm .intro { bottom: 360px; }
+.pm .hint { zoom: 2.6; }
 .pm .nav { zoom: 2.7; top: 6px; gap: 12px; }
 .pm .nav .links { display: none; }
 .pm .burger { display: block; }
@@ -516,6 +525,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 <a class="skip" href="#main">К содержимому</a>
 <p class="sr">Анимация: модель челюсти с налётом, воспалёнными дёснами, тёмной эмалью и кривыми зубами. При прокрутке скейлер снимает налёт, ершик чистит между зубами, чашечка полирует, капа с гелем и лампа отбеливают, элайнер выравнивает зубы. В конце — чистая ровная белая улыбка.</p>
 <div class="world" aria-hidden="true"></div>
+<div class="edge t" aria-hidden="true"></div><div class="edge b" aria-hidden="true"></div>
 <div class="band" aria-hidden="true"></div>
 <div class="stage" aria-hidden="true"><div class="port"><div class="inner"><div class="bg"></div><div class="glow"></div><canvas id="jaw"></canvas></div></div></div>
 <div class="ring" aria-hidden="true"></div>
@@ -1119,7 +1129,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     }
     return pts[pts.length - 1];
   }
-  function baseD() { return Math.min(H * .72, W * (document.documentElement.classList.contains("pm") ? .6 : .42)); }
+  function baseD() { return Math.min(H * .72, W * (document.documentElement.classList.contains("pm") ? .52 : .42)); }
   // Круг над карточкой. Высоту берём при смене ширины: адресная строка телефона не должна его дёргать
   var W0 = 0, H0 = 0;
   // Круг занимает всё место, что остаётся над самой высокой карточкой, чтобы под ней не было пустоты
@@ -1144,7 +1154,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     circ.pw = 0;
     if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; circ.pw = clamp((1 - tg.v) / .42); cx1 = W / 2 + (tg.c || 0) * W * .2 * circ.pw; cy1 = 84 + D / 2 + 6 * circ.pw; band(tg.v, D); }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
-    else { D = circ.Z = baseD() * (document.documentElement.classList.contains("pm") ? 1 - (tg.d - 1) * 2.2 : tg.d); cx1 = W / 2 + tg.c * W * (document.documentElement.classList.contains("pm") ? .23 : .24); cy1 = H / 2 + (tg.y || 0) * H; }
+    else { D = circ.Z = baseD() * (document.documentElement.classList.contains("pm") ? (tg.d > 1 ? 1 - (tg.d - 1) * 2.2 : tg.d * .75) : tg.d); cx1 = W / 2 + tg.c * W * (document.documentElement.classList.contains("pm") ? .235 : .24); cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
     circ.g = (L === "stack" ? ((tg.v || 0) > .4 ? 1 : 0) : (tg.g || 0)) * (k > .99 ? 1 : 0);
     // Пружина: круг слегка отстаёт на старте и мягко докатывается с маленьким перелётом
