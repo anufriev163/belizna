@@ -486,6 +486,25 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .cmp-tag { top: 15%; padding: 6px 8px; font-size: 9px; }
   .cmp-tag.a { left: 17%; } .cmp-tag.b { right: 17%; }
 }
+/* ---------- Политика конфиденциальности: окно поверх сайта с размытием ---------- */
+.pmodal { position: fixed; inset: 0; z-index: 8; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: rgb(18 50 74 / .26); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); opacity: 0; visibility: hidden; transition: opacity .38s ease, visibility 0s .38s; overscroll-behavior: contain; }
+.pmodal.open { opacity: 1; visibility: visible; transition: opacity .38s ease; }
+.pm-card { position: relative; width: min(680px, 100%); max-height: min(84vh, 780px); max-height: min(84dvh, 780px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 30px 32px 34px; border-radius: 30px; background: #fff; box-shadow: 0 40px 90px -30px rgb(18 50 74 / .55); color: #12324A; transform: translateY(22px) scale(.97); opacity: 0; transition: transform .55s var(--spring), opacity .35s ease; outline: 0; }
+.pmodal.open .pm-card { transform: none; opacity: 1; }
+.pm-x { position: sticky; top: 0; float: right; z-index: 1; width: 40px; height: 40px; margin: -10px -12px 0 8px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgb(18 50 74 / .08); color: #12324A; cursor: pointer; transition: background .25s, transform .35s var(--spring); }
+.pm-x:active { transform: scale(.9); }
+.pm-title { margin: 0; padding-right: 36px; font: 700 clamp(22px, 5vw, 30px)/1.1 "Unbounded", sans-serif; letter-spacing: -.03em; }
+.pm-card h2:not(.pm-title) { margin: 26px 0 0; font: 700 16px/1.3 "Unbounded", sans-serif; letter-spacing: -.02em; }
+.pm-card p, .pm-card li { font-size: 15px; line-height: 1.6; color: #3E5160; }
+.pm-card p { margin: 10px 0 0; }
+.pm-card ul { margin: 10px 0 0; padding-left: 20px; }
+.pm-note { padding: 12px 16px; border-radius: 16px; background: rgb(18 50 74 / .05); font-size: 14px !important; }
+.pm-card mark { background: #FFF2C2; color: inherit; padding: 0 .2em; border-radius: 4px; }
+.pm-open, .pm-open body { overflow: hidden; }
+@media (hover: hover) { .pm-x:hover { background: rgb(18 50 74 / .15); } }
+@media (max-width: 520px) { .pm-card { padding: 24px 22px 28px; border-radius: 26px; } .pm-title { font-size: 18px; padding-right: 40px; } }
+@media (max-width: 360px) { .pm-title { font-size: 13px; padding-right: 8px; } }
+@media (prefers-reduced-motion: reduce) { .pm-card { transform: none; } }
 .skip { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 10px 16px; border-radius: 12px; background: #12324A; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
 .skip:focus { top: 12px; }
 .book .check { padding: 6px 0; }
@@ -842,6 +861,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   function stop() { on = false; for (var i = 0; i < plains.length; i++) plains[i].style.transform = ""; lastRest = 0; }
   window.addEventListener("wheel", function (e) {
     if (e.ctrlKey || e.defaultPrevented || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    if (document.documentElement.classList.contains("pm-open")) return;
     if (document.documentElement.classList.contains("menu-open")) { e.preventDefault(); return; }
     var d = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
     if (!on) cur = soft = tgt = window.scrollY;
@@ -1783,6 +1803,68 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   addEventListener("resize", function () { if (innerWidth === W) return; W = innerWidth; H = innerHeight; mob = W <= 760; build(); });
   build();
   window.siteLoop.push(tick);
+})();
+</script>
+<div class="pmodal" id="policy" role="dialog" aria-modal="true" aria-labelledby="pm-title" aria-hidden="true">
+  <div class="pm-card" tabindex="-1">
+    <button class="pm-x" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+    <h2 id="pm-title" class="pm-title">Политика конфиденциальности</h2>
+    <p class="pm-note">Это шаблон. Перед запуском замените выделенные поля и покажите текст юристу.</p>
+
+  <h2>1. Кто обрабатывает данные</h2>
+  <p>Оператор персональных данных: <mark>название организации</mark>, ИНН <mark>0000000000</mark>, адрес <mark>адрес организации</mark>. Вопросы об обработке данных: <mark>электронная почта</mark>.</p>
+
+  <h2>2. Какие данные мы получаем</h2>
+  <p>Через форму записи на сайте мы получаем только то, что вы указали сами:</p>
+  <ul>
+    <li>имя;</li>
+    <li>номер телефона.</li>
+  </ul>
+
+  <h2>3. Зачем нужны эти данные</h2>
+  <p>Чтобы перезвонить вам, ответить на вопросы и записать на приём. Для рассылок мы их не используем.</p>
+
+  <h2>4. На каком основании</h2>
+  <p>Мы обрабатываем данные на основании вашего согласия, которое вы даёте, отмечая галочку в форме записи.</p>
+
+  <h2>5. Как долго храним</h2>
+  <p>Храним данные <mark>срок хранения</mark> или до отзыва согласия, если закон не требует хранить их дольше.</p>
+
+  <h2>6. Кому передаём</h2>
+  <p>Мы не передаём данные третьим лицам, кроме случаев, предусмотренных законом, и сервисов, которые помогают принимать заявки: <mark>перечень сервисов</mark>.</p>
+
+  <h2>7. Ваши права</h2>
+  <p>Вы можете узнать, какие данные у нас есть, уточнить или удалить их, а также отозвать согласие. Для этого напишите на <mark>электронная почта</mark>.</p>
+  </div>
+</div>
+<script>
+// Политика конфиденциальности открывается окном поверх сайта, без перехода на другую страницу
+(function () {
+  var root = document.documentElement, box = document.getElementById("policy"), card = box.querySelector(".pm-card"), x = box.querySelector(".pm-x"), last = null;
+  function open(e) {
+    if (e) e.preventDefault();
+    last = document.activeElement;
+    box.setAttribute("aria-hidden", "false"); box.classList.add("open"); root.classList.add("pm-open");
+    card.scrollTop = 0; setTimeout(function () { card.focus({ preventScroll: true }); }, 60);
+  }
+  function close() {
+    if (!box.classList.contains("open")) return;
+    box.classList.remove("open"); box.setAttribute("aria-hidden", "true"); root.classList.remove("pm-open");
+    if (last && last.focus) last.focus({ preventScroll: true });
+  }
+  [].forEach.call(document.querySelectorAll('a[href="politika.html"]'), function (a) { a.removeAttribute("target"); a.addEventListener("click", open); });
+  x.addEventListener("click", close);
+  box.addEventListener("click", function (e) { if (e.target === box) close(); });
+  box.addEventListener("touchmove", function (e) { if (!card.contains(e.target)) e.preventDefault(); }, { passive: false });
+  window.addEventListener("keydown", function (e) {
+    if (!box.classList.contains("open")) return;
+    if (e.key === "Escape") { close(); return; }
+    if (e.key === "Tab") {   // фокус не уходит за окно
+      var f = [].slice.call(card.querySelectorAll("button, a[href]")), first = f[0], end = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); end.focus(); }
+      else if (!e.shiftKey && document.activeElement === end) { e.preventDefault(); first.focus(); }
+    }
+  });
 })();
 </script>
 </body>
