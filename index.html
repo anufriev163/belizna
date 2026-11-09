@@ -366,7 +366,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 
 /* Телефон и планшет вертикально: круг сверху по центру, карточка под ним.
    В обычных разделах (цены, врачи…) круг уходит, остаётся сайт. */
-@media (max-width: 1100px) and (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
+@media (max-width: 699px) and (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
   .bg { background: #fff; }
   .sec { grid-template-columns: minmax(0, 1fr); width: calc(100% - 32px); }
   .sec .l, .sec .r { grid-column: 1; max-width: none; }
@@ -400,7 +400,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .book { padding-bottom: 0; }
 }
 /* Планшет вертикально: обычные разделы в две колонки, круга там нет */
-@media (min-width: 700px) and (max-width: 1100px) and (orientation: portrait) {
+@media (min-width: 700px) and (max-width: 1100px) and (orientation: portrait) and (max-width: 0px) {
   .plain { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-top: 60px; }
   .sec.plain .r { grid-column: 2; }
   .sec.plain.split .l, .sec.plain.split .r { grid-column: 1 / -1; }
@@ -703,7 +703,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 // Раскладка экрана: те же условия, что в CSS
 (function () {
   var side = matchMedia("(orientation: landscape) and (max-height: 520px)");
-  var stack = matchMedia("(max-width: 1100px) and (orientation: portrait), (max-width: 760px) and (min-height: 521px)");
+  var stack = matchMedia("(max-width: 699px) and (orientation: portrait), (max-width: 760px) and (min-height: 521px)");
   window.siteLayout = function () { return side.matches ? "side" : stack.matches ? "stack" : "wide"; };
 })();
 
@@ -1131,7 +1131,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     }
     return pts[pts.length - 1];
   }
-  function baseD() { return Math.min(H * .72, W * .42); }
+  function baseD() { return Math.min(H * .72, W * (W < 1000 ? .47 : .42)); }
   // Круг над карточкой. Высоту берём при смене ширины: адресная строка телефона не должна его дёргать
   var W0 = 0, H0 = 0;
   // Круг занимает всё место, что остаётся над самой высокой карточкой, чтобы под ней не было пустоты
