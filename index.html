@@ -3,14 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script>
-// Телефон показывает ту же компьютерную раскладку целиком, уменьшенной под экран; приблизить можно щипком
-(function () {
-  if (!matchMedia("(pointer: coarse)").matches || Math.min(screen.width, screen.height) > 600) return;
-  document.querySelector("meta[name=viewport]").content = "width=1120, viewport-fit=cover";
-  document.documentElement.classList.add("pm");
-})();
-</script>
 <title>Белизна</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%2312324A'/><g transform='translate(3.2 3.6) scale(.8)'><path fill='%23fff' d='M11 7.5c-3.4 0-5.5 2.7-5.5 6 0 2.6.9 4.4 1.7 6.6.7 2 .9 5.4 2.6 5.4 2.1 0 1.8-5.3 6.2-5.3s4.1 5.3 6.2 5.3c1.7 0 1.9-3.4 2.6-5.4.8-2.2 1.7-4 1.7-6.6 0-3.3-2.1-6-5.5-6-2.1 0-3.2 1-5 1s-2.9-1-5-1z'/><path fill='none' stroke='%2312324A' stroke-width='2' stroke-linecap='round' d='M11.2 12.6c1.2 2.5 3 3.7 4.8 3.7s3.6-1.2 4.8-3.7'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,7 +112,7 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .no3d .cmp, .no3d .cmpsec { display: none; }
 
 /* ---------- Шапка ---------- */
-.nav { position: fixed; z-index: 4; top: 14px; left: 0; right: 0; margin-inline: auto; width: fit-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 26px; padding: 6px; border-radius: 999px;
+.nav { position: fixed; z-index: 5; top: 14px; left: 0; right: 0; margin-inline: auto; width: fit-content; max-width: calc(100% - 32px); display: flex; align-items: center; gap: 26px; padding: 6px; border-radius: 999px;
   background: rgb(255 255 255 / .74);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / .65), 0 10px 30px -12px rgb(18 50 74 / .22); }
 .nav .logo { display: block; flex: none; width: 38px; height: 38px; }
@@ -144,7 +136,7 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .burger i:last-child { top: 21px; }
 .menu-open .burger i:first-child { transform: translateY(3px) rotate(45deg); }
 .menu-open .burger i:last-child { transform: translateY(-3px) rotate(-45deg); }
-.menu { position: fixed; inset: 0; z-index: 3; display: none; flex-direction: column; justify-content: center; gap: 4vh; padding: 84px 28px 28px; background: #fff; touch-action: none; visibility: hidden; clip-path: circle(0 at var(--mx, 100%) var(--my, 0)); transition: clip-path .6s cubic-bezier(.7,0,.2,1), visibility 0s .6s; }
+.menu { position: fixed; inset: 0; z-index: 4; display: none; flex-direction: column; justify-content: center; gap: 4vh; padding: 84px 28px 28px; background: #fff; touch-action: none; visibility: hidden; clip-path: circle(0 at var(--mx, 100%) var(--my, 0)); transition: clip-path .6s cubic-bezier(.7,0,.2,1), visibility 0s .6s; }
 .menu-open .menu { visibility: visible; clip-path: circle(150vmax at var(--mx, 100%) var(--my, 0)); transition: clip-path .7s cubic-bezier(.7,0,.2,1), visibility 0s; }
 .menu-links { display: grid; gap: 1.2vh; justify-items: start; }
 .menu-links a { padding: .22em 0; font: 700 clamp(20px, 7.5vmin, 34px)/1.1 "Unbounded", sans-serif; letter-spacing: -.03em; color: #12324A; text-decoration: none; }
@@ -1143,8 +1135,8 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   window.addEventListener("site:jump", function () { sp.on = false; sp.vx = sp.vy = sp.vd = 0; });
   // Плашка под кругом: текст уходит под неё, пока круг стоит наверху простых разделов
   var bandEl = document.querySelector(".band");
-  function band(v, D) {
-    var o = clamp((1 - v) * 2.2);
+  function band(v, D, k) {
+    var o = clamp((k - .55) / .3);
     bandEl.style.opacity = o.toFixed(3);
     bandEl.style.height = (84 + D + 22) + "px";
     document.documentElement.style.setProperty("--band", (84 + D + 22).toFixed(0) + "px");
@@ -1152,7 +1144,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   function circleAt(k) {
     var L = window.siteLayout(), tg = circTarget(), D, cx1, cy1, R0 = Math.hypot(W, H) / 2 + 20;
     circ.pw = 0;
-    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; circ.pw = clamp((1 - tg.v) / .42); cx1 = W / 2 + (tg.c || 0) * W * .2 * circ.pw; cy1 = 84 + D / 2 + 6 * circ.pw; band(tg.v, D); }
+    if (L === "stack") { circ.Z = stackD(); D = circ.Z * tg.v; circ.pw = clamp((1 - tg.v) / .42); cx1 = W / 2 + (tg.c || 0) * W * .2 * circ.pw; cy1 = 84 + D / 2 + 6 * circ.pw; band(tg.v, D, k); }
     else if (L === "side") { D = circ.Z = H * .66; cx1 = W * .22; cy1 = H / 2 + 20; }
     else { D = circ.Z = baseD() * (document.documentElement.classList.contains("pm") ? (tg.d > 1 ? 1 - (tg.d - 1) * 2.2 : tg.d * .75) : tg.d); cx1 = W / 2 + tg.c * W * (document.documentElement.classList.contains("pm") ? .235 : .24); cy1 = H / 2 + (tg.y || 0) * H; }
     circ.m = (tg.m || 0) * (k > .99 ? 1 : 0);
