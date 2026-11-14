@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Белизна — смайл-бар профилактической стоматологии</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%2312324A'/><g transform='translate(3.2 3.6) scale(.8)'><path fill='%23fff' d='M11 7.5c-3.4 0-5.5 2.7-5.5 6 0 2.6.9 4.4 1.7 6.6.7 2 .9 5.4 2.6 5.4 2.1 0 1.8-5.3 6.2-5.3s4.1 5.3 6.2 5.3c1.7 0 1.9-3.4 2.6-5.4.8-2.2 1.7-4 1.7-6.6 0-3.3-2.1-6-5.5-6-2.1 0-3.2 1-5 1s-2.9-1-5-1z'/><path fill='none' stroke='%2312324A' stroke-width='2' stroke-linecap='round' d='M11.2 12.6c1.2 2.5 3 3.7 4.8 3.7s3.6-1.2 4.8-3.7'/></g></svg>">
+<link rel="preload" href="model.glb" as="fetch" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
@@ -1121,7 +1122,6 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 
 <script src="vendor/three.min.js"></script>
 <script src="vendor/GLTFLoader.js"></script>
-<script src="model.js" charset="utf-8"></script>
 <script>
 (function () {
   if (!window.THREE || !THREE.GLTFLoader) { window.siteFail("3D не запустилось: не загрузилась библиотека, THREE=" + typeof window.THREE + ", GLTFLoader=" + typeof (window.THREE && THREE.GLTFLoader)); return; }
@@ -1272,13 +1272,9 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   window.addEventListener("site:measure", measure);
   if (document.fonts) document.fonts.ready.then(measure);
 
-  // Модель встроена в model.js — так страница работает и при открытии файла двойным кликом
+  // Модель лежит отдельным файлом model.glb: качается параллельно скриптам (см. preload в начале страницы) и кэшируется сама по себе
   var loader = new THREE.GLTFLoader(), fail = function (e) { console.error("Модель не загрузилась", e); window.siteFail("3D не запустилось: не загрузилась модель"); };
-  if (window.JAW_GLB) {
-    var bin = atob(window.JAW_GLB), buf = new Uint8Array(bin.length);
-    for (var bi = 0; bi < bin.length; bi++) buf[bi] = bin.charCodeAt(bi);
-    loader.parse(buf.buffer, "", build, fail);
-  } else loader.load("human_teeth.glb", build, undefined, fail);
+  loader.load("model.glb", build, undefined, fail);
 
   function build(gltf) {
     var root = gltf.scene, gumsMesh = null, teethMesh = null;
