@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%2312324A'/><g transform='translate(3.2 3.6) scale(.8)'><path fill='%23fff' d='M11 7.5c-3.4 0-5.5 2.7-5.5 6 0 2.6.9 4.4 1.7 6.6.7 2 .9 5.4 2.6 5.4 2.1 0 1.8-5.3 6.2-5.3s4.1 5.3 6.2 5.3c1.7 0 1.9-3.4 2.6-5.4.8-2.2 1.7-4 1.7-6.6 0-3.3-2.1-6-5.5-6-2.1 0-3.2 1-5 1s-2.9-1-5-1z'/><path fill='none' stroke='%2312324A' stroke-width='2' stroke-linecap='round' d='M11.2 12.6c1.2 2.5 3 3.7 4.8 3.7s3.6-1.2 4.8-3.7'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
 <meta name="description" content="Смайл-бар «Белизна»: чистка, отбеливание и элайнеры — показано на 3D-модели челюсти.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Белизна — смайл-бар">
@@ -83,8 +83,8 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .no3d .stage, .no3d .ring { display: none; }
 .no3d .hero { position: relative; z-index: 1; display: grid; place-content: center; padding: 0 16px; text-align: center; }
 .no3d .fallback { display: block; }
-.fallback h2 { margin: 0; font-size: clamp(40px, 8vw, 88px); }
 .fallback p { margin: 14px 0 0; font-size: 18px; color: #3E5160; }
+.fallback .fb-name { margin: 0; font: 700 clamp(40px, 8vw, 88px)/1.08 "Unbounded", sans-serif; letter-spacing: -.03em; overflow-wrap: break-word; color: #12324A; }
 .why { display: block; margin-top: 18px; font-size: 13px; color: #5E6E7A; }
 
 /* ---------- Белые шарики за страницей ---------- */
@@ -145,7 +145,7 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .menu-links a { padding: .22em 0; font: 700 clamp(20px, 7.5vmin, 34px)/1.1 "Unbounded", sans-serif; letter-spacing: -.03em; color: #12324A; text-decoration: none; }
 .menu-links a:active { color: #1F3FD1; }
 .menu-foot { display: grid; gap: 4px; font-size: 15px; color: #5E6E7A; }
-.menu-foot a { color: #12324A; font-weight: 600; text-decoration: none; }
+.menu-foot a, .menu-foot span:first-child { color: #12324A; font-weight: 600; text-decoration: none; }
 .menu-links a, .menu-foot { opacity: 0; translate: 0 18px; transition: opacity .2s, translate .2s; }
 .menu-open .menu-links a, .menu-open .menu-foot { opacity: 1; translate: none; transition: opacity .4s ease calc(.16s + var(--i) * .05s), translate .55s cubic-bezier(.16,.84,.24,1) calc(.16s + var(--i) * .05s); }
 .book-top { flex: none; font: 700 12px/1 "Unbounded", sans-serif; color: #fff; background: #12324A; padding: 13px 18px; border-radius: 999px; text-decoration: none; }
@@ -508,14 +508,14 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 360px) { .pm-title { font-size: 13px; padding-right: 8px; } }
 @media (prefers-reduced-motion: reduce) { .pm-card { transform: none; } }
 /* ---------- Плашка cookie ---------- */
-.cookie { position: fixed; z-index: 6; left: 20px; bottom: 20px; width: min(430px, calc(100% - 40px)); padding: 18px 20px 18px; border-radius: 26px; background: rgb(255 255 255 / .97); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .8), 0 24px 60px -24px rgb(18 50 74 / .5); color: #12324A; opacity: 0; visibility: hidden; transform: translateY(26px); transition: opacity .4s ease, transform .6s var(--spring), visibility 0s .6s; }
+.cookie { position: fixed; z-index: 6; left: 20px; bottom: 20px; width: min(340px, calc(100% - 40px)); padding: 14px 16px 14px; border-radius: 22px; background: rgb(255 255 255 / .97); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .8), 0 24px 60px -24px rgb(18 50 74 / .5); color: #12324A; opacity: 0; visibility: hidden; transform: translateY(26px); transition: opacity .4s ease, transform .6s var(--spring), visibility 0s .6s; }
 .cookie.show { opacity: 1; visibility: visible; transform: none; transition: opacity .4s ease, transform .6s var(--spring); }
 .menu-open .cookie { opacity: 0; pointer-events: none; }
-.cookie p { margin: 0; font-size: 14px; line-height: 1.5; color: #3E5160; }
-.cookie p b { display: block; margin-bottom: 4px; font: 700 15px/1.2 "Unbounded", sans-serif; letter-spacing: -.02em; color: #12324A; }
+.cookie p { margin: 0; font-size: 13px; line-height: 1.45; color: #3E5160; }
+.cookie p b { display: block; margin-bottom: 3px; font: 700 13px/1.2 "Unbounded", sans-serif; letter-spacing: -.02em; color: #12324A; }
 .cookie a { color: #12324A; text-underline-offset: 2px; }
-.cookie .ck-row { display: flex; gap: 8px; margin-top: 14px; }
-.cookie button { flex: 1; padding: 13px 14px; border: 0; border-radius: 999px; font: 700 12px/1 "Unbounded", sans-serif; cursor: pointer; transition: transform .35s var(--spring), background .25s, color .25s; }
+.cookie .ck-row { display: flex; gap: 8px; margin-top: 10px; }
+.cookie button { flex: 1; padding: 11px 12px; border: 0; border-radius: 999px; font: 700 12px/1 "Unbounded", sans-serif; cursor: pointer; transition: transform .35s var(--spring), background .25s, color .25s; }
 .cookie .ck-yes { background: #12324A; color: #fff; }
 .cookie .ck-no { background: rgb(18 50 74 / .08); color: #12324A; }
 .cookie button:active { transform: scale(.95); }
@@ -537,7 +537,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   <b>Белизна</b>
 </div>
 <script>
-// Экран загрузки: держим его, пока не готова челюсть, но не дольше 20 секунд
+// Экран загрузки: держим его, пока не готова челюсть, но не дольше 7 секунд
 (function () {
   var el = document.querySelector(".loader"), called = false;
   window.siteReady = function () {
@@ -557,7 +557,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     var el = document.querySelector(".why"); if (el) el.textContent = why;
     window.siteReady();
   };
-  setTimeout(window.siteReady, 20000);
+  setTimeout(window.siteReady, 7000);   // если челюсть не успела, показываем сайт: она появится, когда догрузится
 })();
 </script>
 <a class="skip" href="#main">К содержимому</a>
@@ -578,11 +578,11 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 </nav>
 <div class="menu" id="menu" inert>
   <div class="menu-links"><a href="#s1" style="--i:0">Услуги</a><a href="#prices" style="--i:1">Цены</a><a href="#doctors" style="--i:2">Врачи</a><a href="#reviews" style="--i:3">Отзывы</a><a href="#faq" style="--i:4">Вопросы</a></div>
-  <div class="menu-foot" style="--i:5"><a href="tel:+70000000000">+7 (000) 000-00-00</a><span>Ежедневно 9:00–21:00</span></div>
+  <div class="menu-foot" style="--i:5"><span>+7 (000) 000-00-00</span><span>Ежедневно 9:00–21:00</span></div>
 </div>
 
 <main id="main">
-<div class="hero" id="top" data-p="0 0" data-c="0" data-d="1"><div class="intro"><h1 class="intro-name">Белизна</h1><p class="intro-line">чистим, отбеливаем и выравниваем зубы.<br>листайте: всё покажем на этой челюсти.</p></div><a class="hint" href="#s1" aria-label="Листать дальше"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v13M4.5 10.5 10 16l5.5-5.5"/></svg><span>Листайте</span></a><div class="fallback"><h2>Белизна</h2><p>Смайл-бар профилактической стоматологии</p><small class="why"></small></div></div>
+<div class="hero" id="top" data-p="0 0" data-c="0" data-d="1"><div class="intro"><h1 class="intro-name">Белизна</h1><p class="intro-line">чистим, отбеливаем и выравниваем зубы.<br>листайте: всё покажем на этой челюсти.</p></div><a class="hint" href="#s1" aria-label="Листать дальше"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v13M4.5 10.5 10 16l5.5-5.5"/></svg><span>Листайте</span></a><div class="fallback"><p class="fb-name">Белизна</p><p>Смайл-бар профилактической стоматологии</p><small class="why"></small></div></div>
 
 <section class="sec film" data-p="0 .05" data-c="1" data-d="1" style="--h:110vh">
   <div class="pin"><div class="tx first">
@@ -719,7 +719,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   <div class="l">
     <h2>Запишитесь на бесплатную консультацию</h2>
     <p>Оставьте телефон — администратор перезвонит в течение 15 минут.</p>
-    <div class="contacts"><a href="tel:+70000000000">+7 (000) 000-00-00</a><span>Москва, ул. Примерная, 1</span><span>Ежедневно 9:00–21:00</span></div>
+    <div class="contacts"><span>+7 (000) 000-00-00</span><span>Москва, ул. Примерная, 1</span><span>Ежедневно 9:00–21:00</span></div>
   </div>
   <form class="r" novalidate>
     <label>Имя<input type="text" name="name" autocomplete="given-name"></label>
@@ -1065,11 +1065,18 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     if (a[0] === "check" && clean) return ["Клуб чистых зубов", "Четыре визита в год по подписке: налёт не успеет затвердеть, а запись придёт сама.", "1 190 ₽", "в месяц"];
     return ["Профгигиена", soft ? "Возьмём мягкий режим ультразвука и закончим фтором: он снимает чувствительность." : "Ультразвук, Air Flow и полировка: снимем налёт и камень у самой десны.", "5 500 ₽", "40–60 минут"];
   }
+  var busy = false, started = false;
   function swap(build) {
+    if (busy) return;   // пока идёт смена шага, лишние клики игнорируем
+    busy = true;
     var old = box.firstElementChild;
     function put() {
       box.textContent = ""; var el = build(); box.appendChild(el);
       if (el.animate) el.animate({ opacity: [0, 1], transform: ["translateY(14px)", "none"] }, { duration: 380, easing: "cubic-bezier(.16,.84,.24,1)" });
+      busy = false;
+      var f = el.querySelector("button");
+      if (started && f) f.focus({ preventScroll: true });   // клавиатура не теряет место
+      started = true;
     }
     if (!old || !old.animate) return put();
     old.animate({ opacity: [1, 0], transform: ["none", "translateY(-10px)"] }, { duration: 170, easing: "ease-in", fill: "forwards" }).onfinish = put;
@@ -1910,8 +1917,17 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   }
   box.querySelector(".ck-yes").addEventListener("click", function () { choose("all"); });
   box.querySelector(".ck-no").addEventListener("click", function () { choose("necessary"); });
-  var wait = setInterval(function () {   // показываем, когда экран загрузки уже ушёл
-    if (document.documentElement.classList.contains("go")) { clearInterval(wait); setTimeout(show, 1500); }
+  // Показываем, когда экран загрузки ушёл и человек начал листать: первый экран остаётся чистым.
+  // Не листает — всё равно покажем через 8 секунд после загрузки.
+  var wait = setInterval(function () {
+    if (!document.documentElement.classList.contains("go")) return;
+    clearInterval(wait);
+    var done = false;
+    function once() { if (done) return; done = true; removeEventListener("scroll", onScroll); setTimeout(show, 600); }
+    function onScroll() { if (window.scrollY > 60) once(); }
+    addEventListener("scroll", onScroll, { passive: true });
+    setTimeout(once, 8000);
+    onScroll();
   }, 300);
 })();
 </script>
