@@ -341,6 +341,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 .js .rev:not(.in) { pointer-events: none; }
 .js .film .rev { will-change: translate, opacity; }
 .plain { will-change: transform; }
+@media (pointer: coarse) { .plain { will-change: auto; } }   /* на касании сдвиг колёсика не нужен: не держим лишние слои в памяти телефона */
 .js .film[data-c="-1"] .rev { --from: -72px 0; }
 .js .film[data-c="1"] .rev { --from: 72px 0; }
 .js .plain .l.rev { --from: 64px 0; }
@@ -832,11 +833,15 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+$)/g, " "); }
   function count(c) {
     var nums = c.text.match(/\d[\d\s ]*\d|\d/g).map(function (x) { return x.replace(/\D/g, ""); }), t0 = performance.now(), id = ++c.id || (c.id = 1);
+    // Пока цифры бегут, ширина цены держится по итоговому значению: иначе на узком экране кнопка рядом
+    // сначала стоит справа, а когда число дорастёт, перескакивает на новую строку
+    var host = c.node.parentNode;
+    c.node.nodeValue = c.text; host.style.minWidth = ""; host.style.minWidth = host.getBoundingClientRect().width + "px";
     (function step(now) {
       if (c.id !== id) return;
       var t = Math.max(0, Math.min(1, (now - t0) / 550)), e = 1 - Math.pow(1 - t, 3), i = 0;
       c.node.nodeValue = t >= 1 ? c.text : c.text.replace(/\d[\d\s ]*\d|\d/g, function () { return fmt(Math.round(nums[i++] * e)); });
-      if (t < 1) requestAnimationFrame(step);
+      if (t < 1) requestAnimationFrame(step); else host.style.minWidth = "";
     })(performance.now());
   }
   function check() {
@@ -1207,7 +1212,11 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   shadow.rotation.x = -Math.PI / 2; shadow.position.y = -3.2; scene.add(shadow);
 
   var W = 0, H = 0;
+  var touchOnly = matchMedia("(pointer: coarse)").matches;
   function resize() {
+    // На телефоне при прокрутке адресная строка прячется и возвращается, меняя только высоту экрана.
+    // Холст и раскладку из-за этого не пересобираем: каждый такой пересбор давал подлаг и мигание
+    if (touchOnly && W && innerWidth === W && Math.abs(innerHeight - H) < 220) return;
     W = window.innerWidth; H = window.innerHeight;
     renderer.setSize(W, H, false);
     innerEl.style.width = W + "px"; innerEl.style.height = H + "px";
