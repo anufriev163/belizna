@@ -76,7 +76,7 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 .no3d .intro, .no3d .hint { display: none; }
 @media (max-width: 760px) {
   .intro { bottom: calc(19svh + 40px); }
-  .intro-name { font-size: 19vw; }
+  .intro-name { font-size: 17vw; }
   .hint { bottom: 19svh; translate: none; margin-bottom: -40px; }
   .hint { width: 50px; height: 50px; margin-left: -25px; }
 }
@@ -1053,7 +1053,7 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
     var nw = ink(name.textContent, ns.fontWeight + " " + ns.fontSize + " " + ns.fontFamily) + (parseFloat(ns.letterSpacing) || 0) * (name.textContent.length - 1);   // у названия сжатый трекинг
     var lw = Math.max.apply(null, line.innerText.split(String.fromCharCode(10)).map(function (s) { return ink(s.trim(), ls.fontWeight + " 20px " + ls.fontFamily); }));
     // Чуть уже названия: строка внутри «Б…а». Но не мельче 15 px: на широких экранах подпись иначе выходила около 14 px
-    if (nw && lw) line.style.fontSize = Math.max(15, 20 * nw / lw * .96).toFixed(2) + "px";
+    if (nw && lw) line.style.fontSize = Math.max(innerWidth >= 700 ? 15 : 0, 20 * nw / lw * .96).toFixed(2) + "px";   // на телефоне подпись остаётся ровно по ширине названия
   }
   fit();
   window.addEventListener("resize", fit);
@@ -1644,7 +1644,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       // Крупно на первом экране, потом вписываем в круг и ставим в его центр
       var tanF = Math.tan(camera.fov * DEG / 2), k = circ.k;
       // На невысоком экране челюсть меньше, чтобы не наезжать на название
-      var zHero = (W / H < .62 ? .48 : W / H < .8 ? .58 : .64 * Math.max(.72, Math.min(1, (H - 300) / 560))) * 1.15, zCirc = .6 * circ.Z * tanF / (.212 * H);
+      // На телефоне размер челюсти зависит от высоты экрана, а название задано по ширине. С адресной строкой Safari
+      // экран короче, и челюсть выходила мелкой рядом с крупным названием. Поэтому на узком экране зум растёт с W/H:
+      // челюсть занимает ту же долю ширины, что на высоком экране (за 1 взят iPhone 390×844)
+      var zHero = (W / H < .62 ? .48 * Math.max(.9, Math.min(1.4, (W / H) / .462)) : W / H < .8 ? .58 : .64 * Math.max(.72, Math.min(1, (H - 300) / 560))) * 1.15, zCirc = .6 * circ.Z * tanF / (.212 * H);
       camera.zoom = (zHero + (zCirc - zHero) * k) * (1 + (rot.z - 1) * k);
       camera.setViewOffset(W, H, -(circ.cx - W / 2), (W / H < .8 ? .14 : .15) * H * (1 - k) - (circ.cy - H / 2), W, H);   // на первом экране челюсть чуть выше: снизу название
     }
