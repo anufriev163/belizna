@@ -578,6 +578,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 <script>
 // Экран загрузки: держим его, пока не готова челюсть, но не дольше 7 секунд
 (function () {
+  // Перезагрузка и возврат на вкладку всегда начинаются с первого экрана, а не с того места, где страницу оставили
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+  window.scrollTo(0, 0);
+  window.addEventListener("pageshow", function (e) { if (e.persisted) window.scrollTo(0, 0); });
   var el = document.querySelector(".loader"), called = false;
   window.siteReady = function () {
     if (called) return; called = true;
