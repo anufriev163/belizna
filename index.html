@@ -443,6 +443,16 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
   .sec.book .l, .sec.book .r { display: flex; flex-direction: column; justify-content: center; }
   .sec.book .r { display: grid; align-content: center; }
   .sec.book .foot { margin-top: 56px; }   /* воздух между карточками и футером */
+  /* Раскладка «круг сверху, карточка под ним»: отступы 51vh и 56vh из планшетных правил здесь только уводили текст за низ экрана */
+  .film[data-c="0"] .tx { padding: 22px 22px 24px; background: rgb(255 255 255 / .72); box-shadow: var(--card-shadow); border-radius: 26px; }
+  .film.cmpsec .tx { padding-top: 22px; }
+  .film.cmpsec .tx h2 { font-size: clamp(22px, 5.6vw, 30px); }
+  .film.cmpsec .tx p { font-size: 15px; }
+}
+/* Планшет вертикально, «Чистая улыбка» и «Было / стало»: круг крупнее, текст ниже, чтобы между ними был зазор и не пустела нижняя половина */
+@media (min-width: 761px) and (max-width: 1100px) and (orientation: portrait) {
+  .film[data-c="0"] .tx { padding-top: 58vh; }
+  .film.cmpsec .tx { padding-top: 62vh; }
 }
 /* Вертикальный планшет и большой вертикальный экран (iPad mini, Air, Pro, монитор 1440×1960): раскладка как на ПК,
    но с воздухом между кругом и карточками. Размеры растут вместе с экраном, поэтому на большом экране вид тот же, что на планшете */
@@ -1310,8 +1320,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
       } else if (stk) sg.y = 0;
       else if (tabPortrait() && el.classList.contains("film") && el.dataset.c === "0" && !el.dataset.cmp) {
         // «Чистая, ровная, белая улыбка»: круг крупнее, а на большом вертикальном экране ещё больше (внизу под ним только заголовок)
-        sg.d = Math.max(sg.d, W <= 1100 ? .78 : 1);
+        sg.d = Math.max(sg.d, 1);
+        if (W <= 1100) sg.y = -.10;   // планшет: круг чуть выше центра, под ним заголовок с зазором
       }
+      else if (tabPortrait() && W <= 1100 && el.classList.contains("film") && el.dataset.cmp) sg.d = Math.max(sg.d, 1);   // «Было / стало» тоже крупнее
       else if (tab && el.classList.contains("book")) {
         sg.y = -.3;   // планшет: круг над двумя широкими карточками
         if (tabPortrait()) {
