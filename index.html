@@ -63,6 +63,7 @@ body { color: #12324A; font: 400 17px/1.6 "Manrope", system-ui, sans-serif; -web
 /* Пока не пришёл css/styles.css, всё кроме экрана загрузки скрыто: страница без стилей перестраивалась бы под загрузчиком и давала сдвиг раскладки */
 html:not(.css) body > :not(.loader):not(script):not(noscript) { visibility: hidden; }
 </style>
+<link rel="preload" href="css/styles.css?v=20261121a" as="style">
 <link rel="stylesheet" href="css/styles.css?v=20261121a" media="print" onload="this.media='all';document.documentElement.classList.add('css')">
 <noscript><link rel="stylesheet" href="css/styles.css?v=20261121a"></noscript>
 </head>
@@ -77,16 +78,18 @@ html:not(.css) body > :not(.loader):not(script):not(noscript) { visibility: hidd
   // Перезагрузка и возврат на вкладку всегда начинаются с первого экрана, а не с того места, где страницу оставили
   try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
   window.scrollTo(0, 0);
-  setTimeout(function () { document.documentElement.classList.add("css"); }, 4000);   // страховка на случай, если стили не загрузились
+  setTimeout(function () { document.documentElement.classList.add("css"); }, 8000);   // страховка: если стили так и не пришли, показываем страницу как есть
   window.addEventListener("pageshow", function (e) { if (e.persisted) window.scrollTo(0, 0); });
   var el = document.querySelector(".loader"), called = false;
   window.siteReady = function () {
     if (called) return; called = true;
-    setTimeout(function () {
+    function reveal() {
+      if (!document.documentElement.classList.contains("css")) { setTimeout(reveal, 80); return; }   // ждём стили, чтобы не открыть скрытую страницу
       el.classList.add("done");                       // зуб добеливается
       setTimeout(function () { document.documentElement.classList.add("go"); }, 300);   // первый экран проявляется
       setTimeout(function () { el.classList.add("off"); }, 420);
-    }, Math.max(0, 900 - performance.now()));
+    }
+    setTimeout(reveal, Math.max(0, 900 - performance.now()));
   };
   // Без 3D сайт остаётся рабочим: на первом экране название и причина
   window.__errs = [];
